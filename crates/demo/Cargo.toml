@@ -10,7 +10,7 @@ wasm-opt = false
 
 [dependencies]
 shared = { path = "../shared" }
-ferrum_wgpu = { package = "ferrum-wgpu", path = "../ferrum-wgpu" }
+ferrum-wgpu = "0.2.1"
 winit = { version = "0.30", default-features = false, features = [
   "rwh_06",
   "x11",

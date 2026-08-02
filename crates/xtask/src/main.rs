@@ -18,14 +18,25 @@ fn main() -> Result<()> {
         Some("deploy") => deploy_web()?,
         Some("rpi") => compile_rpi()?,
         Some("demo") => setup_demo()?,
-        _ => anyhow::bail!("Use: cargo xtask <web,deploy,rpi,run,demo>"),
+        _ => anyhow::bail!("
+            Usage: cargo xtask <command>
+
+            Commands:
+                web      Compile the web application
+                deploy   Deploy the web application
+                rpi      Compile for Raspberry Pi
+                demo     Setup the demo environment"
+            .red()),
     }
 
     Ok(())
 }
 
 fn compile_web() -> Result<()> {
-    anyhow::ensure!(which("wasm-pack").is_ok(), "wasm-pack is not installed");
+    anyhow::ensure!(
+        which("wasm-pack").is_ok(),
+        "wasm-pack is not installed".red()
+    );
 
     let out_dir: PathBuf = std::env::current_dir()?.join("www/public/pkg");
     let status: ExitStatus = Command::new("wasm-pack")

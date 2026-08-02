@@ -3,13 +3,7 @@ strip = true
 
 [workspace]
 resolver = "3"
-members = [
-  "crates/ferrum-wgpu",
-  "crates/rpi",
-  "crates/xtask",
-  "crates/demo",
-  "crates/shared",
-]
+members = ["crates/rpi", "crates/xtask", "crates/demo", "crates/shared"]
 
 [workspace.package]
 edition = "2024"

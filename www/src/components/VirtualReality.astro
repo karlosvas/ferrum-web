@@ -1,6 +1,6 @@
 <section class="relative my-32" id="vr">
   <div class="mb-12">
-    <h2 class="text-primary-light mb-4 text-3xl font-bold md:text-2xl">
+    <h2 class="mb-4 text-3xl font-bold md:text-2xl">
       Inmersión en Realidad Virtual
     </h2>
     <p class="max-w-2xl text-lg">
@@ -9,9 +9,18 @@
     </p>
   </div>
 
-  <div class="relative mb-12 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+  <div class="flex space-y-5 space-x-5">
+    <video
+      class="text-shadow-dark mix-blend-lighte h-fit w-full rounded-2xl shadow-2xl lg:w-1/2"
+      id="hero-video"
+      src="/movimiento.mp4"
+      autoplay
+      muted
+      playsinline
+      loop></video>
+
     <div
-      class="group relative col-span-2 overflow-hidden rounded-2xl md:col-span-2 md:row-span-2"
+      class="group relative flex overflow-hidden rounded-xl mix-blend-lighten shadow-2xl"
     >
       <img
         src="/img/gafas.webp"
@@ -27,33 +36,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Calabera -->
-    <div class="group relative aspect-square overflow-hidden rounded-2xl">
-      <img
-        src="/img/calabera.webp"
-        alt="Rendering 3D"
-        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
-      />
-      <div
-        class="absolute inset-0 bg-linear-to-br from-purple-500/30 to-blue-500/30 mix-blend-overlay"
-      >
-      </div>
-    </div>
-    <!-- Cube -->
-    <div class="group relative aspect-square overflow-hidden rounded-2xl">
-      <img
-        src="/img/cube.webp"
-        alt="Rendering 3D"
-        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
-      />
-      <div
-        class="absolute inset-0 bg-linear-to-br from-purple-500/30 to-blue-500/30 mix-blend-overlay"
-      >
-      </div>
-    </div>
   </div>
-  <!-- Caracteristicas -->
   <div class="grid gap-6 md:grid-cols-3">
     <div
       class="hover:border-primary-light/50 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-colors"

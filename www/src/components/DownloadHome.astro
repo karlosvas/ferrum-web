@@ -1,0 +1,153 @@
+---
+import { PlanType } from "@/types/types.ts";
+import GradientButton from "./GradientButton.astro";
+
+function getStripeUrl(plan: PlanType): string {
+  switch (plan) {
+    case PlanType.FREE:
+      return "https://github.com/karlosvas/ferrum/releases/latest";
+    case PlanType.STUDIO:
+      return "https://buy.stripe.com/3cI9AV8467rLdqqdsQ57W00";
+    case PlanType.ENTERPRISE:
+      return "/contact";
+  }
+}
+
+const plans = [
+  {
+    name: PlanType.FREE,
+    price: "$0",
+    period: "/siempre",
+    description: "Para investigadores, estudiantes y proyectos opensource",
+    features: [
+      {
+        text: "Hasta 3 modelos activos",
+        inclued: true,
+      },
+      {
+        text: "Exportacion a WebGL",
+        inclued: true,
+      },
+      {
+        text: "Comunidad de Discord",
+        inclued: true,
+      },
+      {
+        text: "Sin uso comercial",
+        inclued: false,
+      },
+    ],
+    cta: "Descargar",
+    featured: false,
+  },
+  {
+    name: PlanType.STUDIO,
+    price: "$20",
+    period: "/siempre",
+    description:
+      "Para estudios indies, licencia comercial completa sin royalties",
+    features: [
+      {
+        text: "Modelos ilimitados activos",
+        inclued: true,
+      },
+      {
+        text: "Exportacion a WASM + WEBGL",
+        inclued: true,
+      },
+      {
+        text: "Soporte VR/XR",
+        inclued: true,
+      },
+      {
+        text: "Acceso al codigo fuente",
+        inclued: true,
+      },
+      {
+        text: "Sin SLA garantizado",
+        inclued: false,
+      },
+    ],
+    cta: "Obtener licencia",
+    featured: true,
+  },
+  {
+    name: PlanType.ENTERPRISE,
+    price: "CUSTOM",
+    period: "/siempre",
+    description:
+      "Para empresas y intituciones, con soporte dedicado y todas las funcionalidades",
+    features: [
+      {
+        text: "Licencias multi-sede",
+        inclued: true,
+      },
+      {
+        text: "Soporte prioritario 24/7",
+        inclued: true,
+      },
+      {
+        text: "Integraciones customizadas",
+        inclued: true,
+      },
+    ],
+    cta: "Contactar Ventas",
+    featured: false,
+  },
+];
+---
+
+<main class="relative m-auto mt-20 mb-20 h-fit max-w-[90%]">
+  <section class="mx-auto max-w-[90%] px-5 py-20 xl:max-w-[80%]">
+    <div class="mb-12 text-center">
+      <p class="text-muted mb-2 font-mono text-xs tracking-widest">
+        LICENCIA PERPETUA
+      </p>
+      <h2 class="text-3xl font-medium">Un pago para siempre</h2>
+      <p class="text-muted mt-2 text-sm">Sin subbscripciones, sin sorpresas</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+      {
+        plans.map((plan) => (
+          <div
+            class:list={[
+              "relative m-5 flex flex-col rounded-xl p-14 font-mono",
+              plan.featured ? "border-info border" : "border-border border",
+            ]}
+          >
+            {plan.featured && (
+              <span class="bg-info text-info-foreground text-primary-dark absolute -top-px left-1/2 mt-5 -translate-x-1/2 rounded-b-md px-3 py-1 text-[14px] tracking-wide italic">
+                Mas Popular
+              </span>
+            )}
+            <p class="text-muted mt-2 mb-4 text-[11px] tracking-widest">
+              {plan.name}
+            </p>
+            <ul class="border-border mb-6 flex-1 space-y-2 border-t pt-4">
+              {plan.features.map((f) => (
+                <li
+                  class:list={[
+                    "text-xs",
+                    f.inclued ? "text-foreground" : "text-muted line-through",
+                  ]}
+                >
+                  {" "}
+                  - {f.text}
+                </li>
+              ))}
+            </ul>
+            <p class="text-center">{plan.price}</p>
+            <GradientButton url={getStripeUrl(plan.name)} plan={plan.name}>
+              {plan.cta}
+            </GradientButton>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="text-muted mt-8 text-center text-xs">
+      Todas las licencias incluyen acceso de por vida a la versión adquirida.
+    </p>
+  </section>
+</main>

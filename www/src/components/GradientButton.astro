@@ -1,19 +1,27 @@
 ---
-const {url, plan, id} = Astro.props;
+interface Props {
+  url?: string;
+  plan?: string;
+  id?: string;
+  glow?: boolean;
+}
+
+const { url, plan, id, glow = true } = Astro.props;
 ---
 
 <a href={url}>
-    <button
-     data-plan={plan}
-     id={id}
-    class="from-primary to-primary-light relative mt-10 flex w-full cursor-pointer justify-center rounded-2xl bg-linear-to-r py-1 align-middle transition-all duration-200 hover:translate-y-0.5 hover:opacity-90"
-    >
-    <div class="absolute inset-0 -bottom-5 -z-10 opacity-20">
-      <div
-      class="bg-primary absolute bottom-0 left-0 h-20 w-full rounded-4xl blur-[20px]"
-      >
-    </div>
-  </div>
-  <slot />
+  <button
+    data-plan={plan}
+    id={id}
+    class="from-primary to-primary-light text-dark relative mt-10 flex w-full cursor-pointer justify-center rounded-2xl bg-linear-to-r p-10 py-1 align-middle font-bold transition-all duration-200 hover:translate-y-0.5 hover:opacity-90"
+  >
+    {
+      glow && (
+        <div class="absolute inset-0 -bottom-5 -z-10 opacity-20">
+          <div class="bg-primary absolute inset-0 h-10 w-full rounded-4xl blur-[20px]" />
+        </div>
+      )
+    }
+    <slot />
   </button>
 </a>

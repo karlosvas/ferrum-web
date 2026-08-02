@@ -3,7 +3,7 @@ import GradientButton from "./GradientButton.astro";
 ---
 
 <section class="mb-52 flex flex-col items-center gap-12 px-4">
-  <GradientButton id="showCanvas">Click here to start Demo</GradientButton>
+  <GradientButton id="showCanvas">Start Demo</GradientButton>
   <div class="flex w-full justify-center overflow-x-auto">
     <div
       id="canvas-wrapper"
@@ -110,8 +110,7 @@ import GradientButton from "./GradientButton.astro";
 <script type="module">
   const canvas = document.getElementById("showCanvas");
 
-  if (!canvas)
-    console.warn("[CanvasDemo] #showCanvas not found in DOM");
+  if (!canvas) console.warn("[CanvasDemo] #showCanvas not found in DOM");
 
   let started = false;
   let warningBuilt = false;
@@ -122,7 +121,8 @@ import GradientButton from "./GradientButton.astro";
     if (/Firefox\//.test(ua)) return { kind: "firefox" };
     if (/Edg\//.test(ua)) return { kind: "chromium", flag: "edge" };
     if (navigator.brave) return { kind: "chromium", flag: "brave" };
-    if (/Chrome\/|Chromium\//.test(ua)) return { kind: "chromium", flag: "chrome" };
+    if (/Chrome\/|Chromium\//.test(ua))
+      return { kind: "chromium", flag: "chrome" };
     if (/Safari\//.test(ua)) return { kind: "safari" };
     return { kind: "other" };
   }

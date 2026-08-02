@@ -4,7 +4,30 @@
 </div>
 <div class="absolute inset-0 top-28 -z-10 opacity-20">
   <div
-    class="bg-primary absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[120px]"
+    class="bg-primary animate-pulse-move absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[120px]"
   >
   </div>
 </div>
+
+<style>
+  @keyframes pulse-and-move {
+    0% {
+      transform: translateX(-200px) scale(1.3);
+    }
+    25% {
+      transform: translateX(450px) scale(0.5);
+    }
+    50% {
+      transform: translateX(700px) scale(2.5);
+    }
+    75% {
+      transform: translateX(450px) scale(0.5);
+    }
+    100% {
+      transform: translateX(-200px) scale(1.3);
+    }
+  }
+  .animate-pulse-move {
+    animation: pulse-and-move 10s ease-in-out infinite;
+  }
+</style>

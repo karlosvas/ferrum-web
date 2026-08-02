@@ -1,32 +1,204 @@
-<section class="relative" >
-  <div class="z-10 flex flex-col gap-8 md:flex-row md:items-center md:gap-10">
-    <!-- Text column -->
-    <div class="flex flex-1 flex-col">
+---
+import GradientButton from "./GradientButton.astro";
+
+// TODO: Resicze in canvas
+---
+
+<section
+  class="relative m-auto flex max-h-screen min-h-screen items-center justify-center align-middle"
+>
+  <div
+    class="z-10 flex flex-col items-center justify-center gap-8 md:items-center md:gap-10 lg:flex-row"
+  >
+    <div class="mx-10 flex flex-1 flex-col">
       <h1
-      
-        class="text-primary-light py-4 text-3xl font-bold sm:text-4xl lg:text-5xl xl:text-6xl"
+        class="text-primary-light font-mono text-3xl font-bold sm:text-4xl lg:text-5xl xl:text-6xl"
       >
-        Biología Vegetal en Tres Dimensiones
+        Imaginación en Tres Dimensiones
       </h1>
-      <p class="text-muted pt-5 text-sm leading-relaxed sm:text-base lg:text-lg">
-        De la Planta a la Célula — Explora la vida vegetal mediante transiciones
-        continuas entre morfología externa, estructura interna y nivel molecular,
-        todo integrado en un único entorno 3D interactivo. Ferrum conecta escalas
-        biológicas que tradicionalmente permanecen fragmentadas.
+      <p
+        class="text-muted pt-5 text-sm leading-relaxed sm:text-base lg:text-lg"
+      >
+        Explora tu imaginación mediante un motor dedicado a replicación de la
+        realidad utilizando un motor 3D con todas las funcionalidades para crear
+        experiencias inmersivas tanto en el ambito de RV como videojuegos con
+        una gran eficiencia, todo integrado en un único entorno 3D interactivo.
+        Ferrum te da las herramientas para crear, un mundo, el mundo que tu
+        elijas .
       </p>
-      <!-- Stats (inside text column so they don't overlap) -->
-      <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold sm:text-base">
-        <div class="border-r-1 border-gray-500 pr-4">100+ Modelos</div>
-        <div class="border-r-1 border-gray-500 pr-4">3D VR Nativo</div>
-        <div>3 Plataformas</div>
+      <div
+        class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold sm:text-base"
+      >
+        <div class="border-r border-gray-500 pr-4">100+ Shaders</div>
+        <div class="border-r border-gray-500 pr-4">3D VR Nativo</div>
+        <div>Multi Plataforma</div>
       </div>
+
+      <GradientButton url="/download" glow={false}
+        >Apoyar el proyecto</GradientButton
+      >
     </div>
 
-    <!-- Hero image -->
-    <img
-      src="img/rocks.webp"
-      alt="Visualización 3D de Ferrum"
-      class="aspect-video w-full rounded-2xl object-cover md:aspect-auto md:h-[380px] md:w-1/2 lg:h-[460px] lg:w-[55%] xl:h-[540px]"
-    />
+    <canvas id="model-canvas" class="mr-10 mb-10 h-full w-1/2 rounded-xl">
+    </canvas>
   </div>
 </section>
+
+<script>
+  import emisiveRetro from "@/shaders/emisive_retro.glsl";
+  import noise from "@/shaders/noise.glsl";
+  const canvas = document.getElementById("model-canvas")!;
+
+  const observer = new IntersectionObserver(
+    async (entries) => {
+      if (entries[0].isIntersecting) {
+        observer.disconnect();
+        const [
+          {
+            Scene,
+            PerspectiveCamera,
+            WebGLRenderer,
+            Box3,
+            Vector2,
+            Vector3,
+            SRGBColorSpace,
+            Mesh,
+            ACESFilmicToneMapping,
+            Timer,
+          },
+          { GLTFLoader },
+          { DRACOLoader },
+          { OrbitControls },
+          { EffectComposer },
+          { RenderPass },
+          { UnrealBloomPass },
+          { OutputPass },
+        ] = await Promise.all([
+          import("three"),
+          import("three/examples/jsm/loaders/GLTFLoader.js"),
+          import("three/examples/jsm/loaders/DRACOLoader.js"),
+          import("three/examples/jsm/controls/OrbitControls.js"),
+          import("three/examples/jsm/postprocessing/EffectComposer.js"),
+          import("three/examples/jsm/postprocessing/RenderPass.js"),
+          import("three/examples/jsm/postprocessing/UnrealBloomPass.js"),
+          import("three/examples/jsm/postprocessing/OutputPass.js"),
+        ]);
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath(
+          "https://www.gstatic.com/draco/v1/decoders/",
+        );
+        const loader = new GLTFLoader();
+
+        loader.setDRACOLoader(dracoLoader);
+        const scene = new Scene();
+        const ambientLight = new (await import("three")).AmbientLight(
+          0xffffff,
+          1,
+        );
+        const directionalLight = new (await import("three")).DirectionalLight(
+          0xffffff,
+          2,
+        );
+        directionalLight.position.set(5, 5, 5);
+        const camera = new PerspectiveCamera(
+          50,
+          canvas.clientWidth / canvas.clientHeight,
+          0.1,
+          1000,
+        );
+        const renderer = new WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: true,
+        });
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        renderer.setClearColor(0x000000, 0);
+        renderer.outputColorSpace = SRGBColorSpace;
+        renderer.toneMapping = ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+
+        let screenMaterial: any;
+
+        loader.load("/models/tv.glb", (gltf) => {
+          scene.add(ambientLight);
+          scene.add(directionalLight);
+          scene.add(gltf.scene);
+
+          const crtUniforms = { uTime: { value: 0 } };
+
+          gltf.scene.traverse((child: any) => {
+            if (
+              child instanceof Mesh &&
+              child.material.name === "Material.002"
+            ) {
+              screenMaterial = child.material;
+              screenMaterial.metalness = 0;
+              screenMaterial.roughness = 1;
+              screenMaterial.envMapIntensity = 0;
+              screenMaterial.onBeforeCompile = (shader: any) => {
+                shader.uniforms.uTime = crtUniforms.uTime;
+
+                shader.fragmentShader = shader.fragmentShader.replace(
+                  "#include <common>",
+                  noise,
+                );
+
+                shader.fragmentShader = shader.fragmentShader.replace(
+                  "#include <emissivemap_fragment>",
+                  emisiveRetro,
+                );
+              };
+              screenMaterial.needsUpdate = true;
+            }
+          });
+
+          const box = new Box3().setFromObject(gltf.scene);
+          const center = box.getCenter(new Vector3());
+          const size = box.getSize(new Vector3());
+          const maxDim = Math.max(size.x, size.y, size.z);
+          camera.position.set(center.x, center.y, center.z + maxDim);
+          const controls = new OrbitControls(camera, renderer.domElement);
+          controls.target.copy(center);
+          controls.enableDamping = true;
+          controls.enableZoom = false;
+          controls.dampingFactor = 0.05;
+          controls.minDistance = maxDim * 1.7;
+          controls.maxDistance = maxDim * 3;
+          controls.update();
+
+          const composer = new EffectComposer(renderer);
+          composer.addPass(new RenderPass(scene, camera));
+          composer.addPass(
+            new UnrealBloomPass(
+              new Vector2(canvas.clientWidth, canvas.clientHeight),
+              1.0,
+              0.6,
+              0.9,
+            ),
+          );
+          composer.addPass(new OutputPass());
+
+          const clock = new Timer();
+
+          function animate() {
+            requestAnimationFrame(animate);
+            clock.update();
+
+            const t = clock.getElapsed();
+            crtUniforms.uTime.value = t;
+
+            if (screenMaterial) {
+              screenMaterial.emissiveIntensity = 3 + Math.sin(t * 12) * 0.2;
+            }
+
+            controls.update();
+            composer.render();
+          }
+          animate();
+        });
+      }
+    },
+    { rootMargin: "200px" },
+  );
+  observer.observe(canvas);
+</script>

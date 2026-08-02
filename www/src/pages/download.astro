@@ -2,168 +2,18 @@
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Layout from "../layouts/Layout.astro";
-import GradientButton from "@/components/GradientButton.astro";
-
-const PlanType = {
-  FREE: "FREE",
-  STUDIO: "STUDIO",
-  ENTERPRISE: "ENTERPRISE",
-} as const;
-
-type PlanType = typeof PlanType[keyof typeof PlanType];
-
-function getStripeUrl(plan: PlanType): string {
-  switch (plan) {
-    case PlanType.FREE:      return "https://github.com/karlosvas/ferrum/releases/latest";
-    case PlanType.STUDIO:    return "https://buy.stripe.com/3cI9AV8467rLdqqdsQ57W00";
-    case PlanType.ENTERPRISE: return "/contact";
-  }
-}
-
-const plans = [
-  {
-    name: "FREE",
-    price: "$0",
-    period: "/siempre",
-    description: "Para investigadores, estudiantes y proyectos opensource",
-    features: [
-      {
-        text: "Hasta 3 modelos activos",
-        inclued: true,
-      },
-      {
-        text: "Exportacion a WebGL",
-        inclued: true,
-      },
-      {
-        text: "Comunidad de Discord",
-        inclued: true,
-      },
-      {
-        text: "Sin uso comercial",
-        inclued: false,
-      },
-    ],
-    cta: "Descargar",
-    featured: false,
-  },
-  {
-    name: "STUDIO",
-    price: "$20",
-    period: "/siempre",
-    description:
-      "Para estudios indies, licencia comercial completa sin royalties",
-    features: [
-      {
-        text: "Modelos ilimitados activos",
-        inclued: true,
-      },
-      {
-        text: "Exportacion a WASM + WEBGL",
-        inclued: true,
-      },
-      {
-        text: "Soporte VR/XR",
-        inclued: true,
-      },
-      {
-        text: "Acceso al codigo fuente",
-        inclued: true,
-      },
-      {
-        text: "Sin SLA garantizado",
-        inclued: false,
-      },
-    ],
-    cta: "Obtener licencia",
-    featured: true,
-  },
-  {
-    name: "ENTERPRISE",
-    price: "CUSTOM",
-    period: "/siempre",
-    description:
-      "Para empresas y intituciones, con soporte dedicado y todas las funcionalidades",
-    features: [
-      {
-        text: "Licencias multi-sede",
-        inclued: true,
-      },
-      {
-        text: "Soporte prioritario 24/7",
-        inclued: true,
-      },
-      {
-        text: "Integraciones customizadas",
-        inclued: true,
-      },
-    ],
-    cta: "Contactar Ventas",
-    featured: false,
-  },
-];
-
+import DownloadHome from "@/components/DownloadHome.astro";
 ---
 
 <Layout>
   <Header />
-  <main class="m-auto mb-20 h-fit max-w-[90%]">
-    <section
-      class="py-20 px-5 max-w-[90%] xl:max-w-[80%] mx-auto "
-    >
-      <div class="text-center mb-12 ">
-        <p class="tracking-widest text-xs text-muted mb-2 font-mono">LICENCIA PERPETUA</p>
-        <h2 class="text-3xl font-medium">Un pago para siempre</h2>
-        <p class="text-sm text-muted mt-2">Sin subbscripciones, sin sorpresas</p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
-        {plans.map((plan) => (
-          <div class:list={[
-            "rounded-xl p-14 flex flex-col font-mono relative m-5",
-            plan.featured
-            ? "border border-info"
-            : "border border-border"
-          ]}>
-            {plan.featured && (
-              <span class="italic text-orange-600 absolute mt-5 -top-px left-1/2 -translate-x-1/2 bg-info text-info-foreground text-[14px] tracking-wide px-3 py-1 rounded-b-md">
-                Mas Popular
-              </span>
-            )}
-            <p class="text-[11px] tracking-widest text-muted mt-2 mb-4">{plan.name}</p>
-           <ul class="border-t border-border pt-4 mb-6 space-y-2 flex-1">
-            {plan.features.map((f) => (
-              <li class:list={[
-                "text-xs",
-                f.inclued
-                ? "text-foreground"
-                : "text-muted line-through"
-              ]}> - {f.text}</li>
-            ))}
-           </ul>
-           <p class="text-center">
-              {plan.price}
-           </p>
-           <GradientButton url={getStripeUrl(plan.name as PlanType)} plan={plan.name}>
-            {plan.cta}
-          </GradientButton>
-          </div>
-        ))}
-      </div>
-
-      <p class="text-center text-xs text-muted mt-8">
-        Todas las licencias incluyen acceso de por vida a la versión adquirida.
-      </p>
-
-    </section>
-  </main>
+  <DownloadHome />
   <Footer />
 </Layout>
 
-
 <script>
-  import Toastify from 'toastify-js'
-  import "toastify-js/src/toastify.css"
+  import Toastify from "toastify-js";
+  import "toastify-js/src/toastify.css";
 
   document.querySelectorAll("[data-plan]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -180,7 +30,7 @@ const plans = [
         style: {
           background: "linear-gradient(to right, #00b09b, #96c93d)",
         },
-        onClick: function(){}
+        onClick: function () {},
       }).showToast();
     });
   });

@@ -1,6 +1,7 @@
 ---
 import "@/styles/global.css";
 ---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,8 +15,14 @@ import "@/styles/global.css";
     <link rel="icon" href="/logo/favicon.ico" type="ico" />
 
     <!-- Toast -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <title>Ferrum - Plants Engine</title>
   </head>
@@ -32,3 +39,9 @@ import "@/styles/global.css";
     height: 100%;
   }
 </style>
+
+<script>
+  const audio = new Audio("/continue_loop.mp3");
+  audio.loop = true;
+  window.heroAudio = audio;
+</script>

@@ -1,0 +1,246 @@
+---
+import FerrumLogo from "@/assets/icons/FerrumLogo.astro";
+---
+
+<div
+  id="entry-overlay"
+  class="bg-dark fixed inset-0 z-50 flex cursor-pointer flex-col items-center justify-center gap-10"
+>
+  <div id="entry-logo" class="w-48 sm:w-60">
+    <FerrumLogo class="h-auto w-full" />
+  </div>
+  <p
+    id="entry-cta"
+    class="text-light/70 font-mono text-xs tracking-[0.3em] opacity-0 sm:text-sm"
+  >
+    HAZ CLIC PARA CONTINUAR
+  </p>
+</div>
+
+<style>
+  #entry-logo path,
+  #entry-logo circle,
+  #entry-logo rect {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+
+  const COLORS = {
+    primary: "#CE422B",
+    highlight: "#E85D47",
+    shadow: "#6B1410",
+  } as const;
+
+  const isDebug =
+    import.meta.env.DEV && new URLSearchParams(location.search).has("debug");
+  const overlay = document.getElementById("entry-overlay");
+  const logo = document.getElementById("entry-logo");
+  const ctaText = document.getElementById("entry-cta");
+
+  if (!overlay || !logo)
+    console.error(
+      "[entry-overlay] No se encontraron los elementos del overlay",
+    );
+  else if (isDebug) overlay.remove();
+  else initOverlay(overlay, logo, ctaText);
+
+  function initOverlay(
+    overlay: HTMLElement,
+    logo: HTMLElement,
+    ctaText: HTMLElement | null,
+  ) {
+    try {
+      document.body.classList.add("overflow-hidden");
+
+      const svg = logo.querySelector("svg") as SVGSVGElement;
+      const logoParts = classifyElements(svg);
+      const timeline = gsap.timeline();
+
+      drawLogo(timeline, logo, logoParts);
+      revealCta(timeline, ctaText);
+    } catch (error) {
+      console.error("[entry-overlay]", error);
+      dismiss(overlay);
+    }
+  }
+
+  function classifyElements(svg: SVGSVGElement) {
+    const paths = Array.from(svg.querySelectorAll("path"));
+    const circles = Array.from(svg.querySelectorAll("circle"));
+    const rects = Array.from(svg.querySelectorAll("rect"));
+
+    const hasFill = (el: SVGElement, fill: string) =>
+      el.getAttribute("fill") === fill;
+
+    return {
+      letterF: paths.find(
+        (path) =>
+          hasFill(path, COLORS.primary) && !path.getAttribute("opacity"),
+      ),
+      cornerBrackets: paths.filter(
+        (path) =>
+          hasFill(path, COLORS.primary) &&
+          path.getAttribute("opacity") === "0.7",
+      ),
+      shadowLayer: paths.filter((path) => hasFill(path, COLORS.shadow)),
+      highlights: paths.filter((path) => hasFill(path, COLORS.highlight)),
+      orbitalDots: circles.filter((circle) => hasFill(circle, COLORS.primary)),
+      accentRects: rects,
+      decorativeRing: circles.find(
+        (circle) => circle.getAttribute("fill") === "none",
+      ),
+    };
+  }
+
+  function prepareStrokeDraw(element: SVGPathElement, strokeColor: string) {
+    const length = element.getTotalLength();
+    gsap.set(element, {
+      fill: "none",
+      stroke: strokeColor,
+      strokeWidth: 1.6,
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      strokeDasharray: length,
+      strokeDashoffset: length,
+    });
+  }
+
+  interface DrawOptions {
+    strokeColor: string;
+    duration: number;
+    fillAfter?: string | null;
+    finalOpacity?: number;
+    position?: gsap.Position;
+  }
+
+  function drawTracedPath(
+    timeline: gsap.core.Timeline,
+    element: SVGPathElement,
+    {
+      strokeColor,
+      duration,
+      fillAfter = null,
+      finalOpacity = 1,
+      position = 0,
+    }: DrawOptions,
+  ) {
+    prepareStrokeDraw(element, strokeColor);
+    timeline.to(
+      element,
+      {
+        strokeDashoffset: 0,
+        duration,
+        ease: "power1.inOut",
+        opacity: finalOpacity,
+      },
+      position,
+    );
+    if (fillAfter) {
+      timeline.to(element, { fill: fillAfter, duration: 0.2 }, "-=0.1");
+    }
+  }
+
+  function drawLogo(
+    timeline: gsap.core.Timeline,
+    logo: HTMLElement,
+    parts: ReturnType<typeof classifyElements>,
+  ) {
+    timeline.fromTo(
+      logo,
+      { autoAlpha: 0, scale: 0.0 },
+      { autoAlpha: 1, scale: 1, duration: 0.5, ease: "power2.out" },
+    );
+
+    if (parts.letterF) {
+      drawTracedPath(timeline, parts.letterF, {
+        strokeColor: COLORS.primary,
+        duration: 0.8,
+        fillAfter: COLORS.primary,
+      });
+    }
+
+    parts.highlights.forEach((highlight, index) => {
+      drawTracedPath(timeline, highlight, {
+        strokeColor: COLORS.highlight,
+        duration: 0.3,
+        fillAfter: COLORS.highlight,
+        position: `-=${index ? 0.25 : 0.1}`,
+      });
+    });
+
+    parts.cornerBrackets.forEach((bracket, index) => {
+      drawTracedPath(timeline, bracket, {
+        strokeColor: COLORS.primary,
+        duration: 0.35,
+        finalOpacity: 0.7,
+        position: `-=${0.22 - index * 0.02}`,
+      });
+    });
+
+    timeline.fromTo(
+      parts.shadowLayer,
+      { autoAlpha: 0 },
+      { autoAlpha: 0.4, duration: 0.4 },
+      "-=0.2",
+    );
+
+    timeline.fromTo(
+      parts.orbitalDots,
+      { scale: 0 },
+      { scale: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.07 },
+      "-=0.2",
+    );
+
+    timeline.fromTo(
+      parts.accentRects,
+      { autoAlpha: 0, scale: 0 },
+      { autoAlpha: 0.5, scale: 1, duration: 0.3, stagger: 0.05 },
+      "-=0.15",
+    );
+  }
+
+  function revealCta(
+    timeline: gsap.core.Timeline,
+    ctaText: HTMLElement | null,
+  ) {
+    if (!ctaText) return;
+
+    timeline
+      .fromTo(
+        ctaText,
+        { autoAlpha: 0, y: 8 },
+        { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
+        "-=0.1",
+      )
+      .call(() => {
+        overlay?.addEventListener("click", () => dismiss(overlay));
+      })
+      .to(ctaText, {
+        opacity: 0.45,
+        duration: 0.8,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut",
+      });
+  }
+  function dismiss(overlay: HTMLElement) {
+    gsap.to(overlay, {
+      autoAlpha: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        overlay.remove();
+        document.body.classList.remove("overflow-hidden");
+      },
+    });
+
+    const video = document.getElementById("hero-video") as HTMLVideoElement;
+
+    video.play();
+    (window as any).heroAudio.play().catch(() => {});
+  }
+</script>

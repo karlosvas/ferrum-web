@@ -14,11 +14,11 @@ import GradientEffect from "@/components/GradientEffect.astro";
 import Requierments from "@/components/Requierments.astro";
 import Download from "@/components/Download.astro";
 import VirtualReality from "@/components/VirtualReality.astro";
+import EntryOverlay from "@/components/EntryOverlay.astro";
 
 const dataSection = [
   {
-    title:
-      "Arquitectura Técnica para Visualización Multiescala Vegetal",
+    title: "Arquitectura Técnica para Visualización Multiescala Vegetal",
     description:
       "Ferrum combina rendering PBR (Physically Based Rendering) con precisión botánica para generar una experiencia de aprendizaje que reproduce la complejidad estructural que estudian biólogos e investigadores.",
     svg: BoxIcon,
@@ -58,7 +58,7 @@ const dataSection = [
 
 <Layout>
   <Header />
-  <main class="m-auto mt-20 h-fit w-[92%] max-w-[1400px] px-4 sm:px-8 md:px-16 lg:w-[75%] xl:w-[70%]" >
+  <main class="m-auto h-fit px-10 lg:px-40">
     <GradientEffect />
     <HeroSection />
     <Features dataSection={dataSection} />
@@ -67,4 +67,5 @@ const dataSection = [
     <Requierments />
   </main>
   <Footer />
+  <EntryOverlay />
 </Layout>

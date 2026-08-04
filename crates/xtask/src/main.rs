@@ -56,13 +56,19 @@ fn compile_web() -> Result<()> {
     Ok(())
 }
 
+fn www_dir() -> anyhow::Result<PathBuf> {
+    Ok(std::env::current_dir()?.join("www"))
+}
+
 fn deploy_web() -> Result<()> {
     anyhow::ensure!(which("vercel").is_ok(), "vercel CLI is not installed");
 
     compile_web()?;
 
+    let dir: PathBuf = www_dir()?;
     let status: ExitStatus = Command::new("vercel")
         .args(["deploy", "--prod", "--yes", "--archive=tgz"])
+        .current_dir(dir)
         .status()?;
 
     anyhow::ensure!(status.success(), "vercel deploy failed");

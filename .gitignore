@@ -18,6 +18,7 @@ Thumbs.db
 public/pkg/
 *.hdr
 *.exr
+!crates/demo/res/exr/NightSkyHDRI014_4K_HDR.exr
 .env*
 .claude
 

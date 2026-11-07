@@ -95,3 +95,63 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Toasts (src/lib/toast.ts) */
+.toastify.ferrum-toast {
+  --toast-accent: var(--c-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.75rem 0.75rem 0.875rem;
+  max-width: min(24rem, calc(100vw - 2rem));
+  border: 1px solid var(--c-line);
+  border-left: 4px solid var(--toast-accent);
+  border-radius: 0.75rem;
+  background: var(--c-secondary) !important;
+  color: var(--c-light);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  box-shadow: 0 10px 30px -10px rgb(28 25 23 / 0.35);
+}
+.toastify.ferrum-toast--success {
+  --toast-accent: #2f8f4e;
+}
+.toastify.ferrum-toast--error {
+  --toast-accent: #c0392b;
+}
+.dark .toastify.ferrum-toast--success {
+  --toast-accent: #33ff66;
+}
+.dark .toastify.ferrum-toast--error {
+  --toast-accent: #ff6b5a;
+}
+.ferrum-toast__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.ferrum-toast__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  color: var(--toast-accent);
+  background: color-mix(in srgb, var(--toast-accent) 15%, transparent);
+}
+.ferrum-toast__icon svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+.toastify.ferrum-toast .toast-close {
+  align-self: flex-start;
+  padding: 0 0.25rem;
+  color: var(--c-muted);
+  opacity: 0.7;
+}
+.toastify.ferrum-toast .toast-close:hover {
+  opacity: 1;
+}

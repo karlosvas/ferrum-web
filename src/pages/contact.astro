@@ -149,7 +149,7 @@ import Layout from "@/layouts/Layout.astro";
   </main>
 
   <script>
-    declare const Toastify: (opts: object) => { showToast: () => void };
+    import { showToast } from "@/lib/toast";
 
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const btn = document.getElementById("submit-btn") as HTMLButtonElement;
@@ -178,35 +178,13 @@ import Layout from "@/layouts/Layout.astro";
         const json = await res.json();
 
         if (res.ok) {
-          Toastify({
-            text: "✓ Mensaje enviado correctamente",
-            duration: 4000,
-            gravity: "bottom",
-            position: "right",
-            style: {
-              background: "linear-gradient(to right, #ce422b, #e85a3f)",
-              borderRadius: "12px",
-              fontSize: "14px",
-              fontWeight: "600",
-            },
-          }).showToast();
+          showToast("success", "Mensaje enviado correctamente");
           form.reset();
         } else {
           throw new Error(json.error ?? "Error al enviar");
         }
       } catch (err) {
-        Toastify({
-          text: "✗ Error al enviar el mensaje. Inténtalo de nuevo.",
-          duration: 4000,
-          gravity: "bottom",
-          position: "right",
-          style: {
-            background: "linear-gradient(to right, #7f1d1d, #ce422b)",
-            borderRadius: "12px",
-            fontSize: "14px",
-            fontWeight: "600",
-          },
-        }).showToast();
+        showToast("error", "No se pudo enviar el mensaje. Inténtalo de nuevo.");
       } finally {
         setLoading(false);
       }

@@ -1,3 +1,8 @@
 allowBuilds:
   esbuild: true
   sharp: true
+# Fijadas temporalmente: las últimas versiones están dentro del minimumReleaseAge de pnpm (24h).
+# Se pueden quitar cuando pasen 24h desde su publicación.
+overrides:
+  satteri: 0.11.6
+  tinyps: 0.5.1

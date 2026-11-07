@@ -1,5 +1,6 @@
 ---
 import "@/styles/global.css";
+import { ClientRouter } from "astro:transitions";
 ---
 
 <!doctype html>
@@ -12,6 +13,11 @@ import "@/styles/global.css";
         if (localStorage.getItem("theme") === "dark")
           document.documentElement.classList.add("dark");
       } catch (e) {}
+      // Intro de Ferrum ya vista en esta sesión: ocultarla sin parpadeo.
+      try {
+        if (sessionStorage.getItem("ferrum-entered"))
+          document.documentElement.classList.add("entered");
+      } catch (e) {}
     </script>
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="Ferrum, plant engine 3d" />
@@ -21,6 +27,7 @@ import "@/styles/global.css";
     <link rel="icon" href="/logo/favicon.ico" type="ico" />
 
     <title>Ferrum - Plants Engine</title>
+    <ClientRouter />
   </head>
   <body>
     <slot />
@@ -37,7 +44,64 @@ import "@/styles/global.css";
 </style>
 
 <script>
+  // Los <script> de módulo se ejecutan una sola vez, aunque se navegue con
+  // ClientRouter: el audio sigue sonando entre páginas.
   const audio = new Audio("/continue_loop.mp3");
   audio.loop = true;
+  audio.volume = 0.3;
   window.heroAudio = audio;
+
+  // La música es solo de la portada: se pausa (con fundido) en el resto de
+  // páginas. Al volver a "/" la reanuda EntryOverlay.
+  document.addEventListener("astro:page-load", () => {
+    if (location.pathname.replace(/\/$/, "") === "" || audio.paused) return;
+    const fade = setInterval(() => {
+      audio.volume = Math.max(0, audio.volume - 0.05);
+      if (audio.volume <= 0) {
+        clearInterval(fade);
+        audio.pause();
+        audio.volume = 0.3;
+      }
+    }, 40);
+  });
+
+  // ClientRouter sustituye los atributos de <html>: conservar el tema oscuro.
+  document.addEventListener("astro:before-swap", (e) => {
+    try {
+      if (localStorage.getItem("theme") === "dark")
+        e.newDocument.documentElement.classList.add("dark");
+    } catch {}
+    try {
+      if (sessionStorage.getItem("ferrum-entered"))
+        e.newDocument.documentElement.classList.add("entered");
+    } catch {}
+  });
+
+  // El motor WASM de /demo (winit) no se puede reiniciar ni abandonar sin
+  // recargar: desde y hacia /demo se hace una navegación completa.
+  document.addEventListener("astro:before-preparation", (e) => {
+    const isDemo = (u: URL) => u.pathname.replace(/\/$/, "") === "/demo";
+    if (isDemo(e.from) || isDemo(e.to)) {
+      e.loader = async () => {
+        location.href = e.to.href;
+      };
+    }
+  });
+
+  // Aparición al hacer scroll: .scroll-fade-in -> .visible (ver global.css)
+  document.addEventListener("astro:page-load", () => {
+    const els = document.querySelectorAll(".scroll-fade-in");
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    );
+    els.forEach((el) => observer.observe(el));
+  });
 </script>

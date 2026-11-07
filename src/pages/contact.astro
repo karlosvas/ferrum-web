@@ -150,44 +150,51 @@ import Layout from "@/layouts/Layout.astro";
 
   <script>
     import { showToast } from "@/lib/toast";
+    document.addEventListener("astro:page-load", () => {
+      const form = document.getElementById(
+        "contact-form",
+      ) as HTMLFormElement | null;
+      if (!form) return;
+      const btn = document.getElementById("submit-btn") as HTMLButtonElement;
+      const btnText = document.getElementById("btn-text") as HTMLSpanElement;
+      const spinner = document.getElementById("btn-spinner") as HTMLElement;
 
-    const form = document.getElementById("contact-form") as HTMLFormElement;
-    const btn = document.getElementById("submit-btn") as HTMLButtonElement;
-    const btnText = document.getElementById("btn-text") as HTMLSpanElement;
-    const spinner = document.getElementById("btn-spinner") as HTMLElement;
-
-    function setLoading(loading: boolean) {
-      btn.disabled = loading;
-      btnText.textContent = loading ? "Enviando..." : "Enviar mensaje";
-      spinner.classList.toggle("hidden", !loading);
-    }
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      setLoading(true);
-
-      const data = Object.fromEntries(new FormData(form));
-
-      try {
-        const res = await fetch("/resend", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-
-        const json = await res.json();
-
-        if (res.ok) {
-          showToast("success", "Mensaje enviado correctamente");
-          form.reset();
-        } else {
-          throw new Error(json.error ?? "Error al enviar");
-        }
-      } catch (err) {
-        showToast("error", "No se pudo enviar el mensaje. Inténtalo de nuevo.");
-      } finally {
-        setLoading(false);
+      function setLoading(loading: boolean) {
+        btn.disabled = loading;
+        btnText.textContent = loading ? "Enviando..." : "Enviar mensaje";
+        spinner.classList.toggle("hidden", !loading);
       }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const data = Object.fromEntries(new FormData(form));
+
+        try {
+          const res = await fetch("/resend", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          const json = await res.json();
+
+          if (res.ok) {
+            showToast("success", "Mensaje enviado correctamente");
+            form.reset();
+          } else {
+            throw new Error(json.error ?? "Error al enviar");
+          }
+        } catch (err) {
+          showToast(
+            "error",
+            "No se pudo enviar el mensaje. Inténtalo de nuevo.",
+          );
+        } finally {
+          setLoading(false);
+        }
+      });
     });
   </script>
 

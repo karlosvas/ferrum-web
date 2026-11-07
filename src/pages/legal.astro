@@ -370,31 +370,35 @@ import Layout from "@/layouts/Layout.astro";
 </Layout>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>(".tab-btn");
-  const contents = document.querySelectorAll<HTMLElement>(".tab-content");
+  document.addEventListener("astro:page-load", () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>(".tab-btn");
+    const contents = document.querySelectorAll<HTMLElement>(".tab-content");
 
-  const activeClasses = ["bg-primary/15", "border-primary/50", "text-light"];
+    if (!buttons.length) return;
 
-  function activate(id: string) {
+    const activeClasses = ["bg-primary/15", "border-primary/50", "text-light"];
+
+    function activate(id: string) {
+      buttons.forEach((btn) => {
+        const isActive = btn.dataset.tab === id;
+        activeClasses.forEach((cls) => btn.classList.toggle(cls, isActive));
+        if (isActive) btn.classList.remove("text-muted");
+        else btn.classList.add("text-muted");
+      });
+      contents.forEach((el) => {
+        el.classList.toggle("hidden", el.id !== `tab-${id}`);
+      });
+      history.replaceState(null, "", `#${id}`);
+    }
+
     buttons.forEach((btn) => {
-      const isActive = btn.dataset.tab === id;
-      activeClasses.forEach((cls) => btn.classList.toggle(cls, isActive));
-      if (isActive) btn.classList.remove("text-muted");
-      else btn.classList.add("text-muted");
+      btn.addEventListener("click", () => activate(btn.dataset.tab!));
     });
-    contents.forEach((el) => {
-      el.classList.toggle("hidden", el.id !== `tab-${id}`);
-    });
-    history.replaceState(null, "", `#${id}`);
-  }
 
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => activate(btn.dataset.tab!));
+    // Activate from URL hash or default to first tab
+    const hash = location.hash.slice(1);
+    const initial =
+      hash && document.getElementById(`tab-${hash}`) ? hash : "privacidad";
+    activate(initial);
   });
-
-  // Activate from URL hash or default to first tab
-  const hash = location.hash.slice(1);
-  const initial =
-    hash && document.getElementById(`tab-${hash}`) ? hash : "privacidad";
-  activate(initial);
 </script>

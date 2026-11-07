@@ -10,14 +10,3 @@ import DownloadHome from "@/components/DownloadHome.astro";
   <DownloadHome />
   <Footer />
 </Layout>
-
-<script>
-  import { showToast } from "@/lib/toast";
-
-  document.querySelectorAll("[data-plan]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const plan = btn.getAttribute("data-plan");
-      showToast("info", `Plan ${plan} seleccionado`, 3000);
-    });
-  });
-</script>

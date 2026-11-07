@@ -3,7 +3,7 @@ import DownloadIcon from "@/assets/icons/DownloadIcon.astro";
 import GradientButton from "./GradientButton.astro";
 ---
 
-<section class="my-20 md:my-40">
+<section class="scroll-fade-in my-20 md:my-40">
   <h2 class="text-primary-light py-5 text-xl font-bold">Descarga Ferrum</h2>
   <div class="flex flex-col gap-8 md:flex-row md:items-center">
     <img
@@ -38,33 +38,38 @@ import GradientButton from "./GradientButton.astro";
 </section>
 
 <script>
-  const BASE =
-    "https://github.com/karlosvas/ferrum-web/releases/latest/download";
+  document.addEventListener("astro:page-load", () => {
+    const BASE =
+      "https://github.com/karlosvas/ferrum-web/releases/latest/download";
 
-  const platform = (() => {
-    const ua = navigator.userAgent;
-    if (ua.includes("Win")) return "windows";
-    if (ua.includes("Mac")) return "macos";
-    return "linux";
-  })();
+    const platform = (() => {
+      const ua = navigator.userAgent;
+      if (ua.includes("Win")) return "windows";
+      if (ua.includes("Mac")) return "macos";
+      return "linux";
+    })();
 
-  const files: Record<string, { file: string; label: string }> = {
-    windows: {
-      file: "ferrum-windows-x86_64.exe",
-      label: "Descargar para Windows",
-    },
-    macos: { file: "ferrum-macos-aarch64", label: "Descargar para macOS" },
-    linux: { file: "ferrum-linux-x86_64", label: "Descargar para Linux" },
-  };
+    const files: Record<string, { file: string; label: string }> = {
+      windows: {
+        file: "ferrum-windows-x86_64.exe",
+        label: "Descargar para Windows",
+      },
+      macos: { file: "ferrum-macos-aarch64", label: "Descargar para macOS" },
+      linux: { file: "ferrum-linux-x86_64", label: "Descargar para Linux" },
+    };
 
-  const { file, label } = files[platform];
+    const { file, label } = files[platform];
 
-  const btn = document.getElementById("download-btn") as HTMLAnchorElement;
-  const lbl = document.getElementById("download-label");
-  const hint = document.getElementById("download-platform");
+    const btn = document.getElementById(
+      "download-btn",
+    ) as HTMLAnchorElement | null;
+    if (!btn) return;
+    const lbl = document.getElementById("download-label");
+    const hint = document.getElementById("download-platform");
 
-  btn.href = `${BASE}/${file}`;
-  btn.removeAttribute("target");
-  if (lbl) lbl.textContent = label;
-  if (hint) hint.textContent = `SHA-256 disponible en la página de releases`;
+    btn.href = `${BASE}/${file}`;
+    btn.removeAttribute("target");
+    if (lbl) lbl.textContent = label;
+    if (hint) hint.textContent = `SHA-256 disponible en la página de releases`;
+  });
 </script>

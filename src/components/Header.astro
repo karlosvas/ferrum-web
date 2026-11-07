@@ -140,38 +140,40 @@ const isActive = (href: string) => !href.includes("#") && href === path;
 </header>
 
 <script>
-  const toggle = document.getElementById("menu-toggle");
-  const menu = document.getElementById("mobile-menu");
-  const bars = ["bar1", "bar2", "bar3"].map((id) =>
-    document.getElementById(id),
-  );
+  document.addEventListener("astro:page-load", () => {
+    const toggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("mobile-menu");
+    const bars = ["bar1", "bar2", "bar3"].map((id) =>
+      document.getElementById(id),
+    );
 
-  function setMenu(open: boolean) {
-    menu?.classList.toggle("hidden", !open);
-    toggle?.setAttribute("aria-expanded", String(open));
-    bars[0]?.classList.toggle("translate-y-1.5", open);
-    bars[0]?.classList.toggle("rotate-45", open);
-    bars[1]?.classList.toggle("opacity-0", open);
-    bars[2]?.classList.toggle("-translate-y-1.5", open);
-    bars[2]?.classList.toggle("-rotate-45", open);
-  }
+    function setMenu(open: boolean) {
+      menu?.classList.toggle("hidden", !open);
+      toggle?.setAttribute("aria-expanded", String(open));
+      bars[0]?.classList.toggle("translate-y-1.5", open);
+      bars[0]?.classList.toggle("rotate-45", open);
+      bars[1]?.classList.toggle("opacity-0", open);
+      bars[2]?.classList.toggle("-translate-y-1.5", open);
+      bars[2]?.classList.toggle("-rotate-45", open);
+    }
 
-  toggle?.addEventListener("click", () =>
-    setMenu(menu?.classList.contains("hidden") ?? false),
-  );
-  menu
-    ?.querySelectorAll("a")
-    .forEach((a) => a.addEventListener("click", () => setMenu(false)));
-  // Si se agranda la ventana, cerramos el menú móvil
-  matchMedia("(min-width: 768px)").addEventListener("change", (e) => {
-    if (e.matches) setMenu(false);
-  });
+    toggle?.addEventListener("click", () =>
+      setMenu(menu?.classList.contains("hidden") ?? false),
+    );
+    menu
+      ?.querySelectorAll("a")
+      .forEach((a) => a.addEventListener("click", () => setMenu(false)));
+    // Si se agranda la ventana, cerramos el menú móvil
+    matchMedia("(min-width: 768px)").addEventListener("change", (e) => {
+      if (e.matches) setMenu(false);
+    });
 
-  // Tema claro/oscuro
-  document.getElementById("theme-toggle")?.addEventListener("click", () => {
-    const dark = document.documentElement.classList.toggle("dark");
-    try {
-      localStorage.setItem("theme", dark ? "dark" : "light");
-    } catch {}
+    // Tema claro/oscuro
+    document.getElementById("theme-toggle")?.addEventListener("click", () => {
+      const dark = document.documentElement.classList.toggle("dark");
+      try {
+        localStorage.setItem("theme", dark ? "dark" : "light");
+      } catch {}
+    });
   });
 </script>

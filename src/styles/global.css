@@ -155,3 +155,59 @@ body {
 .toastify.ferrum-toast .toast-close:hover {
   opacity: 1;
 }
+
+/* Aparición al hacer scroll (efecto de amanahacademia) */
+@media (scripting: enabled) {
+  .scroll-fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  .scroll-fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Transiciones entre páginas (Astro ClientRouter): la cabecera se queda fija
+   y solo el contenido sale/entra con un fundido + desplazamiento. */
+header {
+  view-transition-name: site-header;
+}
+main {
+  view-transition-name: page-main;
+}
+::view-transition-group(site-header) {
+  animation: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(page-main) {
+  animation: page-out 0.2s cubic-bezier(0.4, 0, 1, 1) both;
+}
+::view-transition-new(page-main) {
+  animation: page-in 0.4s cubic-bezier(0, 0, 0.2, 1) 0.1s both;
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* La intro (logo) solo se muestra una vez por sesión */
+html.entered #entry-overlay {
+  display: none;
+}

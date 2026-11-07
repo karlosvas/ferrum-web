@@ -5,12 +5,12 @@ import GradientButton from "./GradientButton.astro";
 ---
 
 <section
-  class="relative m-auto flex max-h-screen min-h-screen items-center justify-center align-middle"
+  class="relative m-auto flex min-h-screen items-center justify-center pt-28 pb-12 align-middle"
 >
   <div
-    class="z-10 flex flex-col items-center justify-center gap-8 md:items-center md:gap-10 lg:flex-row"
+    class="z-10 flex w-full flex-col items-center justify-center gap-8 md:gap-10 lg:flex-row"
   >
-    <div class="mx-10 flex flex-1 flex-col">
+    <div class="flex w-full flex-1 flex-col">
       <h1
         class="text-primary-light font-mono text-3xl font-bold sm:text-4xl lg:text-5xl xl:text-6xl"
       >
@@ -29,8 +29,8 @@ import GradientButton from "./GradientButton.astro";
       <div
         class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold sm:text-base"
       >
-        <div class="border-r border-gray-500 pr-4">100+ Shaders</div>
-        <div class="border-r border-gray-500 pr-4">3D VR Nativo</div>
+        <div class="border-line border-r pr-4">100+ Shaders</div>
+        <div class="border-line border-r pr-4">3D VR Nativo</div>
         <div>Multi Plataforma</div>
       </div>
 
@@ -39,7 +39,10 @@ import GradientButton from "./GradientButton.astro";
       >
     </div>
 
-    <canvas id="model-canvas" class="mr-10 mb-10 h-full w-1/2 rounded-xl">
+    <canvas
+      id="model-canvas"
+      class="aspect-square w-full max-w-md rounded-xl sm:max-w-lg lg:w-1/2 lg:max-w-none"
+    >
     </canvas>
   </div>
 </section>
@@ -111,7 +114,7 @@ import GradientButton from "./GradientButton.astro";
           antialias: true,
           alpha: true,
         });
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
         renderer.setClearColor(0x000000, 0);
         renderer.outputColorSpace = SRGBColorSpace;
         renderer.toneMapping = ACESFilmicToneMapping;
@@ -177,6 +180,17 @@ import GradientButton from "./GradientButton.astro";
             ),
           );
           composer.addPass(new OutputPass());
+
+          const resize = () => {
+            const w = canvas.clientWidth;
+            const h = canvas.clientHeight;
+            if (!w || !h) return;
+            renderer.setSize(w, h, false);
+            composer.setSize(w, h);
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+          };
+          new ResizeObserver(resize).observe(canvas);
 
           const clock = new Timer();
 

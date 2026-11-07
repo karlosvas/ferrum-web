@@ -1,184 +1,177 @@
 ---
 import FerrumLogo from "@/assets/icons/FerrumLogo.astro";
 import GitHubIcon from "@/assets/icons/GitHubIcon.astro";
+
+const links = [
+  { href: "/", label: "Inicio" },
+  { href: "/#features", label: "Características" },
+  { href: "/demo", label: "Demo" },
+  { href: "/download", label: "Descargar" },
+  { href: "/contact", label: "Contacto" },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => !href.includes("#") && href === path;
 ---
 
-<header
-  class="bg-secondary/90 absolute top-0 z-50 w-full border border-b border-gray-700 opacity-95"
->
-  <!-- Main row: always visible -->
-  <div class="flex items-center justify-between p-4 lg:px-20">
-    <a href="/" class="flex-shrink-0 cursor-pointer">
-      <FerrumLogo height="80" width="80" />
-    </a>
-
-    <!-- Desktop nav — hidden on mobile -->
-    <nav class="hidden md:block">
-      <ul
-        class="text-md flex cursor-pointer space-x-5 lg:space-x-10 lg:text-xl"
-      >
-        <li
-          class="hover:text-primary-light group text-md relative transition-all duration-200"
-        >
-          <a href="/">
-            Home
-            <span
-              class="from-accent to-primary-light absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r transition-all duration-200 group-hover:w-full"
-            ></span>
-          </a>
-        </li>
-        <li
-          class="hover:text-primary-light group text-md relative transition-all duration-200"
-        >
-          <a href="/demo">
-            Demo
-            <span
-              class="from-accent to-primary-light absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r transition-all duration-200 group-hover:w-full"
-            ></span>
-          </a>
-        </li>
-        <li
-          class="hover:text-primary-light group text-md relative transition-all duration-200"
-        >
-          <a href="/download">
-            Download
-            <span
-              class="from-accent to-primary-light absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r transition-all duration-200 group-hover:w-full"
-            ></span>
-          </a>
-        </li>
-        <li
-          class="hover:text-primary-light group text-md relative transition-all duration-200"
-        >
-          <a href="/contact">
-            Contacto
-            <span
-              class="from-accent to-primary-light absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r transition-all duration-200 group-hover:w-full"
-            ></span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-
-    <!-- Right: GitHub + hamburger -->
-    <div class="flex flex-shrink-0 items-center gap-3">
-      <a
-        href="https://github.com/karlosvas"
-        target="_blank"
-        class="hover:text-primary-light cursor-pointer transition-all duration-200"
-      >
-        <GitHubIcon height="30" width="30" />
+<header class="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5">
+  <div
+    class="border-line bg-secondary/80 mx-auto max-w-6xl rounded-2xl border shadow-[0_8px_30px_rgba(28,25,23,0.08)] backdrop-blur-md"
+  >
+    <div class="flex items-center justify-between gap-3 px-3 py-2 sm:px-4">
+      <a href="/" aria-label="Ferrum — inicio" class="shrink-0">
+        <FerrumLogo height="44" width="44" />
       </a>
 
-      <!-- Hamburger button — visible only on mobile -->
-      <button
-        id="menu-toggle"
-        class="cursor-pointer rounded p-1.5 transition-colors duration-200 hover:bg-white/10 md:hidden"
-        aria-label="Abrir menú de navegación"
-        aria-expanded="false"
-      >
-        <span
-          class="block h-0.5 w-5 bg-current transition-all duration-300"
-          id="bar1"></span>
-        <span
-          class="my-1 block h-0.5 w-5 bg-current transition-all duration-300"
-          id="bar2"></span>
-        <span
-          class="block h-0.5 w-5 bg-current transition-all duration-300"
-          id="bar3"></span>
-      </button>
-    </div>
-  </div>
+      <!-- Nav escritorio -->
+      <nav class="hidden md:block" aria-label="Principal">
+        <ul class="flex items-center gap-1 text-sm lg:text-base">
+          {
+            links.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  aria-current={isActive(l.href) ? "page" : undefined}
+                  class:list={[
+                    "hover:bg-primary/10 hover:text-primary block rounded-full px-3 py-1.5 transition-colors duration-200 lg:px-4",
+                    isActive(l.href)
+                      ? "bg-primary/10 text-primary font-semibold"
+                      : "text-light",
+                  ]}
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
 
-  <!-- Mobile nav dropdown — hidden by default, always hidden on md+ -->
-  <nav
-    id="mobile-menu"
-    class="hidden border-t border-gray-700 md:hidden"
-    aria-hidden="true"
-  >
-    <ul class="flex flex-col space-y-1 p-4 text-base">
-      <li>
-        <a
-          href="/"
-          class="hover:text-primary-light block rounded-lg px-3 py-2 transition-all duration-200 hover:bg-white/5"
-          >Home</a
+      <div class="flex shrink-0 items-center gap-1">
+        <button
+          id="theme-toggle"
+          type="button"
+          aria-label="Cambiar tema claro/oscuro"
+          class="hover:bg-primary/10 hover:text-primary cursor-pointer rounded-full p-2 transition-colors duration-200"
         >
-      </li>
-      <li>
+          <!-- Luna (visible en claro) -->
+          <svg
+            class="block h-5 w-5 dark:hidden"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg
+          >
+          <!-- Sol (visible en oscuro) -->
+          <svg
+            class="hidden h-5 w-5 dark:block"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><circle cx="12" cy="12" r="4"></circle><path
+              d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+            ></path></svg
+          >
+        </button>
         <a
-          href="/#features"
-          class="hover:text-primary-light block rounded-lg px-3 py-2 transition-all duration-200 hover:bg-white/5"
-          >Features</a
+          href="https://github.com/karlosvas"
+          target="_blank"
+          rel="noopener"
+          aria-label="GitHub"
+          class="hover:bg-primary/10 hover:text-primary rounded-full p-2 transition-colors duration-200"
         >
-      </li>
-      <li>
-        <a
-          href="/#vr"
-          class="hover:text-primary-light block rounded-lg px-3 py-2 transition-all duration-200 hover:bg-white/5"
-          >VR</a
+          <GitHubIcon height="22" width="22" />
+        </a>
+        <button
+          id="menu-toggle"
+          type="button"
+          class="hover:bg-primary/10 cursor-pointer rounded-full p-2.5 transition-colors duration-200 md:hidden"
+          aria-label="Abrir menú de navegación"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
         >
-      </li>
-      <li>
-        <a
-          href="/#requirements"
-          class="hover:text-primary-light block rounded-lg px-3 py-2 transition-all duration-200 hover:bg-white/5"
-          >Requirments</a
-        >
-      </li>
-      <li>
-        <a
-          href="/demo"
-          class="hover:text-primary-light block rounded-lg px-3 py-2 transition-all duration-200 hover:bg-white/5"
-          >Demo</a
-        >
-      </li>
-      <li>
-        <a
-          href="/download"
-          class="hover:text-primary-light block rounded-lg px-3 py-2 transition-all duration-200 hover:bg-white/5"
-          >Download</a
-        >
-      </li>
-    </ul>
-  </nav>
+          <span
+            class="block h-0.5 w-5 bg-current transition-all duration-300"
+            id="bar1"></span>
+          <span
+            class="my-1 block h-0.5 w-5 bg-current transition-all duration-300"
+            id="bar2"></span>
+          <span
+            class="block h-0.5 w-5 bg-current transition-all duration-300"
+            id="bar3"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú móvil -->
+    <nav
+      id="mobile-menu"
+      class="border-line hidden border-t md:hidden"
+      aria-label="Principal móvil"
+    >
+      <ul class="flex flex-col gap-1 p-3">
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                aria-current={isActive(l.href) ? "page" : undefined}
+                class:list={[
+                  "hover:bg-primary/10 hover:text-primary block rounded-xl px-4 py-3 transition-colors duration-200",
+                  isActive(l.href)
+                    ? "bg-primary/10 text-primary font-semibold"
+                    : "",
+                ]}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
 </header>
 
 <script>
   const toggle = document.getElementById("menu-toggle");
   const menu = document.getElementById("mobile-menu");
-  const bar1 = document.getElementById("bar1");
-  const bar2 = document.getElementById("bar2");
-  const bar3 = document.getElementById("bar3");
+  const bars = ["bar1", "bar2", "bar3"].map((id) =>
+    document.getElementById(id),
+  );
 
-  toggle?.addEventListener("click", () => {
-    const isOpen = !menu?.classList.contains("hidden");
+  function setMenu(open: boolean) {
+    menu?.classList.toggle("hidden", !open);
+    toggle?.setAttribute("aria-expanded", String(open));
+    bars[0]?.classList.toggle("translate-y-1.5", open);
+    bars[0]?.classList.toggle("rotate-45", open);
+    bars[1]?.classList.toggle("opacity-0", open);
+    bars[2]?.classList.toggle("-translate-y-1.5", open);
+    bars[2]?.classList.toggle("-rotate-45", open);
+  }
 
-    // Toggle menu visibility
-    menu?.classList.toggle("hidden", isOpen);
-    menu?.setAttribute("aria-hidden", String(isOpen));
-    toggle.setAttribute("aria-expanded", String(!isOpen));
-
-    // Animate hamburger → X
-    if (!isOpen) {
-      bar1?.classList.add("translate-y-1.5", "rotate-45");
-      bar2?.classList.add("opacity-0", "scale-x-0");
-      bar3?.classList.add("-translate-y-1.5", "-rotate-45");
-    } else {
-      bar1?.classList.remove("translate-y-1.5", "rotate-45");
-      bar2?.classList.remove("opacity-0", "scale-x-0");
-      bar3?.classList.remove("-translate-y-1.5", "-rotate-45");
-    }
+  toggle?.addEventListener("click", () =>
+    setMenu(menu?.classList.contains("hidden") ?? false),
+  );
+  menu
+    ?.querySelectorAll("a")
+    .forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  // Si se agranda la ventana, cerramos el menú móvil
+  matchMedia("(min-width: 768px)").addEventListener("change", (e) => {
+    if (e.matches) setMenu(false);
   });
 
-  // Close mobile menu when a nav link is clicked
-  menu?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      menu.classList.add("hidden");
-      menu.setAttribute("aria-hidden", "true");
-      toggle?.setAttribute("aria-expanded", "false");
-      bar1?.classList.remove("translate-y-1.5", "rotate-45");
-      bar2?.classList.remove("opacity-0", "scale-x-0");
-      bar3?.classList.remove("-translate-y-1.5", "-rotate-45");
-    });
+  // Tema claro/oscuro
+  document.getElementById("theme-toggle")?.addEventListener("click", () => {
+    const dark = document.documentElement.classList.toggle("dark");
+    try {
+      localStorage.setItem("theme", dark ? "dark" : "light");
+    } catch {}
   });
 </script>

@@ -9,11 +9,11 @@ interface Props {
 const { url, plan, id, glow = true } = Astro.props;
 ---
 
-<a href={url}>
+<a href={url} class="block w-full">
   <button
     data-plan={plan}
     id={id}
-    class="from-primary to-primary-light text-dark relative mt-10 flex w-full cursor-pointer justify-center rounded-2xl bg-linear-to-r p-10 py-1 align-middle font-bold transition-all duration-200 hover:translate-y-0.5 hover:opacity-90"
+    class="from-primary to-primary-light text-dark relative mt-10 flex w-full cursor-pointer justify-center rounded-2xl bg-linear-to-r px-6 py-2 align-middle font-bold transition-all duration-200 hover:translate-y-0.5 hover:opacity-90"
   >
     {
       glow && (

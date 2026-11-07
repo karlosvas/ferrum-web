@@ -97,8 +97,8 @@ const plans = [
 ];
 ---
 
-<main class="relative m-auto mt-20 mb-20 h-fit max-w-[90%]">
-  <section class="mx-auto max-w-[90%] px-5 py-20 xl:max-w-[80%]">
+<main class="relative m-auto mb-20 h-fit max-w-[92%] pt-28">
+  <section class="mx-auto max-w-7xl px-2 py-12 sm:px-5 md:py-20">
     <div class="mb-12 text-center">
       <p class="text-muted mb-2 font-mono text-xs tracking-widest">
         LICENCIA PERPETUA
@@ -112,24 +112,24 @@ const plans = [
         plans.map((plan) => (
           <div
             class:list={[
-              "relative m-5 flex flex-col rounded-xl p-14 font-mono",
-              plan.featured ? "border-info border" : "border-border border",
+              "bg-secondary relative flex flex-col rounded-xl p-6 font-mono sm:p-10 xl:p-12",
+              plan.featured ? "border-primary border-2" : "border-line border",
             ]}
           >
             {plan.featured && (
-              <span class="bg-info text-info-foreground text-primary-dark absolute -top-px left-1/2 mt-5 -translate-x-1/2 rounded-b-md px-3 py-1 text-[14px] tracking-wide italic">
+              <span class="bg-primary text-dark absolute -top-px left-1/2 mt-5 -translate-x-1/2 rounded-b-md px-3 py-1 text-[14px] tracking-wide italic">
                 Mas Popular
               </span>
             )}
             <p class="text-muted mt-2 mb-4 text-[11px] tracking-widest">
               {plan.name}
             </p>
-            <ul class="border-border mb-6 flex-1 space-y-2 border-t pt-4">
+            <ul class="border-line mb-6 flex-1 space-y-2 border-t pt-4">
               {plan.features.map((f) => (
                 <li
                   class:list={[
                     "text-xs",
-                    f.inclued ? "text-foreground" : "text-muted line-through",
+                    f.inclued ? "text-light" : "text-muted line-through",
                   ]}
                 >
                   {" "}
@@ -137,7 +137,7 @@ const plans = [
                 </li>
               ))}
             </ul>
-            <p class="text-center">{plan.price}</p>
+            <p class="text-center text-2xl font-bold">{plan.price}</p>
             <GradientButton url={getStripeUrl(plan.name)} plan={plan.name}>
               {plan.cta}
             </GradientButton>

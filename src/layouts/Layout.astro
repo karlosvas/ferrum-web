@@ -6,7 +6,13 @@ import "@/styles/global.css";
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      try {
+        if (localStorage.getItem("theme") === "dark")
+          document.documentElement.classList.add("dark");
+      } catch (e) {}
+    </script>
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="Ferrum, plant engine 3d" />
 

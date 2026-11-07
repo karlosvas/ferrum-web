@@ -2,46 +2,50 @@
 import GradientButton from "./GradientButton.astro";
 ---
 
-<section class="mb-52 flex flex-col items-center gap-12 px-4">
-  <GradientButton id="showCanvas">Start Demo</GradientButton>
-  <div class="flex w-full justify-center overflow-x-auto">
+<section
+  class="mb-24 flex min-h-[70vh] flex-col items-center gap-10 px-0 pt-[12vh] sm:px-4"
+>
+  <div class="w-full max-w-xs">
+    <GradientButton id="showCanvas">Start Demo</GradientButton>
+  </div>
+  <div class="flex w-full justify-center">
     <div
       id="canvas-wrapper"
-      class="bg-dark hidden w-fit flex-col overflow-hidden rounded-xl shadow-[0_0_0_1px_rgba(206,66,43,0.15),0_0_60px_rgba(206,66,43,0.08),0_40px_120px_rgba(0,0,0,0.7)]"
+      class="hidden w-full max-w-5xl flex-col overflow-hidden rounded-xl bg-[#0a0e1a] shadow-[0_0_0_1px_rgba(168,62,34,0.2),0_20px_60px_rgba(28,25,23,0.25)]"
     >
       <!-- Terminal toolbar -->
       <div
-        class="bg-secondary border-primary/10 flex items-center justify-between border-b px-4 py-2.5 select-none"
+        class="flex items-center justify-between gap-2 border-b border-white/10 bg-[#151b2e] px-3 py-2.5 select-none sm:px-4"
       >
         <!-- Dots -->
         <div class="flex items-center gap-1.5">
           <span
             id="closeCanvas"
-            class="bg-primary h-2.5 w-2.5 rounded-full shadow-[0_0_6px_rgba(206,55,43,0.5)]"
+            class="h-2.5 w-2.5 cursor-pointer rounded-full bg-[#ce422b] shadow-[0_0_6px_rgba(206,55,43,0.5)]"
           ></span>
           <span class="h-2.5 w-2.5 rounded-full bg-[#4a4a2a]"></span>
           <span class="h-2.5 w-2.5 rounded-full bg-[#1a3a1a]"></span>
         </div>
         <!-- Title -->
         <div
-          class="flex items-center gap-0.5 font-mono text-xs tracking-widest"
+          class="flex items-center gap-0.5 font-mono text-[10px] tracking-widest sm:text-xs"
         >
-          <span class="text-primary font-bold">FERRUM</span>
-          <span class="text-primary/40 mx-0.5">::</span>
-          <span class="text-light/60">RENDER_ENGINE</span>
+          <span class="font-bold text-[#ce422b]">FERRUM</span>
+          <span class="mx-0.5 text-[#ce422b]/40">::</span>
+          <span class="text-[#e5e7eb]/60">RENDER_ENGINE</span>
           <span
-            class="text-primary ml-0.5 animate-[blink_1.2s_step-end_infinite]"
+            class="ml-0.5 animate-[blink_1.2s_step-end_infinite] text-[#ce422b]"
             >▋</span
           >
         </div>
         <!-- Badges -->
-        <div class="flex gap-1.5">
+        <div class="hidden gap-1.5 sm:flex">
           <span
-            class="text-primary/70 border-primary/20 rounded border px-1.5 py-px font-mono text-[10px] tracking-widest"
+            class="rounded border border-[#ce422b]/20 px-1.5 py-px font-mono text-[10px] tracking-widest text-[#ce422b]/70"
             >WGPU</span
           >
           <span
-            class="text-primary/70 border-primary/20 rounded border px-1.5 py-px font-mono text-[10px] tracking-widest"
+            class="rounded border border-[#ce422b]/20 px-1.5 py-px font-mono text-[10px] tracking-widest text-[#ce422b]/70"
             >WASM</span
           >
         </div>
@@ -61,17 +65,20 @@ import GradientButton from "./GradientButton.astro";
         <!-- Aviso de WebGPU no disponible (contenido inyectado por JS) -->
         <div
           id="webgpu-warning"
-          class="bg-dark/95 absolute inset-0 hidden flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-8 text-center backdrop-blur-sm"
+          class="absolute inset-0 hidden flex-col items-center justify-center gap-5 overflow-y-auto bg-[#0a0e1a]/95 px-6 py-8 text-center backdrop-blur-sm"
         >
-          <span class="text-primary text-4xl leading-none">⚠</span>
+          <span class="text-4xl leading-none text-[#ce422b]">⚠</span>
           <div class="space-y-2">
-            <p id="wg-title" class="text-light font-mono text-base font-bold">
+            <p
+              id="wg-title"
+              class="font-mono text-base font-bold text-[#e5e7eb]"
+            >
               WebGPU no está disponible
             </p>
             <p
-              class="text-light/60 mx-auto max-w-md font-mono text-xs leading-relaxed"
+              class="mx-auto max-w-md font-mono text-xs leading-relaxed text-[#e5e7eb]/60"
             >
-              Este motor 3D necesita <span class="text-primary">WebGPU</span> para
+              Este motor 3D necesita <span class="text-[#ce422b]">WebGPU</span> para
               renderizar.
             </p>
           </div>
@@ -80,7 +87,7 @@ import GradientButton from "./GradientButton.astro";
             href="https://webgpureport.org"
             target="_blank"
             rel="noopener"
-            class="text-primary/60 hover:text-primary font-mono text-[11px] underline underline-offset-2"
+            class="font-mono text-[11px] text-[#ce422b]/60 underline underline-offset-2 hover:text-[#ce422b]"
           >
             Comprobar el soporte de mi navegador →
           </a>
@@ -88,18 +95,18 @@ import GradientButton from "./GradientButton.astro";
       </div>
       <!-- Footer -->
       <div
-        class="bg-secondary border-primary/8 flex items-center gap-3 border-t px-4 py-2"
+        class="flex items-center gap-3 border-t border-white/10 bg-[#151b2e] px-4 py-2"
       >
         <div
-          class="via-primary/20 h-px flex-1 bg-linear-to-r from-transparent to-transparent"
+          class="h-px flex-1 bg-linear-to-r from-transparent via-[#ce422b]/20 to-transparent"
         >
         </div>
         <span
-          class="text-primary/35 font-mono text-[10px] tracking-[0.12em] whitespace-nowrap"
+          class="font-mono text-[10px] tracking-[0.12em] whitespace-nowrap text-[#ce422b]/35"
           >ferrum v0.1.0-alpha</span
         >
         <div
-          class="via-primary/20 h-px flex-1 bg-linear-to-r from-transparent to-transparent"
+          class="h-px flex-1 bg-linear-to-r from-transparent via-[#ce422b]/20 to-transparent"
         >
         </div>
       </div>
@@ -131,15 +138,15 @@ import GradientButton from "./GradientButton.astro";
   function copyChip(value) {
     return `
       <button type="button"
-        class="wg-copy group mt-1.5 flex w-full items-center justify-between gap-3 rounded-md border border-primary/25 bg-secondary/60 px-3 py-2 text-left transition hover:border-primary/60"
+        class="wg-copy group mt-1.5 flex w-full items-center justify-between gap-3 rounded-md border border-[#ce422b]/25 bg-white/5 px-3 py-2 text-left transition hover:border-[#ce422b]/60"
         data-copy="${value}">
-        <code class="text-primary text-xs break-all">${value}</code>
-        <span class="copy-label text-light/50 group-hover:text-light shrink-0 text-[10px] tracking-wider uppercase">Copiar</span>
+        <code class="text-[#ce422b] text-xs break-all">${value}</code>
+        <span class="copy-label text-[#e5e7eb]/50 group-hover:text-[#e5e7eb] shrink-0 text-[10px] tracking-wider uppercase">Copiar</span>
       </button>`;
   }
 
   function step(n, text) {
-    return `<li class="leading-relaxed"><span class="text-primary/70">${n}.</span> ${text}</li>`;
+    return `<li class="leading-relaxed"><span class="text-[#ce422b]/70">${n}.</span> ${text}</li>`;
   }
 
   // Construye el contenido del aviso según el navegador (una sola vez).
@@ -156,31 +163,31 @@ import GradientButton from "./GradientButton.astro";
       const flagUrl = `${flag}://flags/#enable-unsafe-webgpu`;
       if (titleEl) titleEl.textContent = "Activa WebGPU en tu navegador";
       html = `
-        <ol class="text-light/80 space-y-3 text-left font-mono text-xs">
+        <ol class="text-[#e5e7eb]/80 space-y-3 text-left font-mono text-xs">
           ${step(1, "Copia esta dirección y ábrela en una pestaña nueva:")}
           ${copyChip(flagUrl)}
-          ${step(2, 'Cambia la opción a <span class="text-light">“Enabled”</span>.')}
-          ${step(3, 'Pulsa <span class="text-light">“Relaunch”</span> para reiniciar el navegador.')}
+          ${step(2, 'Cambia la opción a <span class="text-[#e5e7eb]">“Enabled”</span>.')}
+          ${step(3, 'Pulsa <span class="text-[#e5e7eb]">“Relaunch”</span> para reiniciar el navegador.')}
         </ol>`;
     } else if (kind === "firefox") {
       if (titleEl) titleEl.textContent = "Activa WebGPU en Firefox";
       html = `
-        <ol class="text-light/80 space-y-3 text-left font-mono text-xs">
+        <ol class="text-[#e5e7eb]/80 space-y-3 text-left font-mono text-xs">
           ${step(1, "Abre esta dirección en una pestaña nueva:")}
           ${copyChip("about:config")}
-          ${step(2, 'Busca esta preferencia y ponla en <span class="text-light">true</span>:')}
+          ${step(2, 'Busca esta preferencia y ponla en <span class="text-[#e5e7eb]">true</span>:')}
           ${copyChip("dom.webgpu.enabled")}
           ${step(3, "Reinicia Firefox. En Linux, Firefox Nightly da mejor soporte.")}
         </ol>`;
     } else {
       if (titleEl) titleEl.textContent = "Tu navegador no soporta WebGPU";
       html = `
-        <p class="text-light/70 mx-auto max-w-md font-mono text-xs leading-relaxed">
+        <p class="text-[#e5e7eb]/70 mx-auto max-w-md font-mono text-xs leading-relaxed">
           Usa una versión reciente de
-          <span class="text-light">Chrome</span>,
-          <span class="text-light">Edge</span>,
-          <span class="text-light">Brave</span> o
-          <span class="text-light">Safari</span> para ver la demo.
+          <span class="text-[#e5e7eb]">Chrome</span>,
+          <span class="text-[#e5e7eb]">Edge</span>,
+          <span class="text-[#e5e7eb]">Brave</span> o
+          <span class="text-[#e5e7eb]">Safari</span> para ver la demo.
         </p>`;
     }
 
@@ -193,10 +200,10 @@ import GradientButton from "./GradientButton.astro";
           await navigator.clipboard.writeText(btn.dataset.copy);
           const prev = label.textContent;
           label.textContent = "¡Copiado!";
-          btn.classList.add("border-primary");
+          btn.classList.add("border-[#ce422b]");
           setTimeout(() => {
             label.textContent = prev;
-            btn.classList.remove("border-primary");
+            btn.classList.remove("border-[#ce422b]");
           }, 1500);
         } catch (e) {
           if (label) label.textContent = "Copia manual";
@@ -264,7 +271,9 @@ import GradientButton from "./GradientButton.astro";
     console.log("[ferrum] importando /pkg/demo.js …");
     let init;
     try {
-      ({ default: init } = await import("/pkg/demo.js"));
+      // URL en variable: Vite no debe resolverlo al compilar (lo genera `cargo xtask web`).
+      const wasmUrl = "/pkg/demo.js";
+      ({ default: init } = await import(/* @vite-ignore */ wasmUrl));
     } catch (e) {
       console.error("[ferrum] No se pudo cargar /pkg/demo.js:", e);
       started = false;

@@ -1,17 +1,17 @@
-<section class="relative my-32" id="vr">
+<section class="relative my-20 md:my-32" id="vr">
   <div class="mb-12">
-    <h2 class="mb-4 text-3xl font-bold md:text-2xl">
+    <h2 class="mb-4 text-2xl font-bold md:text-3xl">
       Inmersión en Realidad Virtual
     </h2>
-    <p class="max-w-2xl text-lg">
+    <p class="text-muted max-w-2xl text-base md:text-lg">
       Explora el mundo vegetal en un espacio tridimensional completo. <br /> Cada
       detalle de la planta cobra vida ante tus ojos.
     </p>
   </div>
 
-  <div class="flex space-y-5 space-x-5">
+  <div class="mb-6 flex flex-col gap-5 lg:flex-row">
     <video
-      class="text-shadow-dark mix-blend-lighte h-fit w-full rounded-2xl shadow-2xl lg:w-1/2"
+      class="h-fit w-full rounded-2xl shadow-2xl lg:w-1/2"
       id="hero-video"
       src="/movimiento.mp4"
       autoplay
@@ -20,7 +20,7 @@
       loop></video>
 
     <div
-      class="group relative flex overflow-hidden rounded-xl mix-blend-lighten shadow-2xl"
+      class="group relative flex overflow-hidden rounded-2xl shadow-2xl lg:w-1/2"
     >
       <img
         src="/img/gafas.webp"
@@ -28,7 +28,7 @@
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
       <div
-        class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-100 transition-opacity duration-300 lg:opacity-0 lg:group-hover:opacity-100"
       >
         <div class="absolute bottom-4 left-4 text-white">
           <p class="text-xl font-semibold">Soporte OpenXR</p>
@@ -39,7 +39,7 @@
   </div>
   <div class="grid gap-6 md:grid-cols-3">
     <div
-      class="hover:border-primary-light/50 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-colors"
+      class="hover:border-primary-light/50 border-line bg-secondary rounded-xl border p-6 transition-colors"
     >
       <h4 class="mb-2 text-lg font-bold">Controles Intuitivos</h4>
       <p class="text-sm opacity-80">
@@ -47,7 +47,7 @@
       </p>
     </div>
     <div
-      class="hover:border-primary-light/50 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-colors"
+      class="hover:border-primary-light/50 border-line bg-secondary rounded-xl border p-6 transition-colors"
     >
       <h4 class="mb-2 text-lg font-bold">Precisión científica</h4>
       <p class="text-sm opacity-80">
@@ -55,7 +55,7 @@
       </p>
     </div>
     <div
-      class="hover:border-primary-light/50 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-colors"
+      class="hover:border-primary-light/50 border-line bg-secondary rounded-xl border p-6 transition-colors"
     >
       <h4 class="mb-2 text-lg font-bold">60 FPS Estables</h4>
       <p class="text-sm opacity-80">

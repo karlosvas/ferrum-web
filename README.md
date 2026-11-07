@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="www/public/logo/favicon.svg" alt="Ferrum Logo" width="120"/>
+  <img src="public/logo/favicon.svg" alt="Ferrum Logo" width="120"/>
 
 # Ferrum ⚙️
 
@@ -216,12 +216,12 @@ cargo run -p demo
 cargo xtask web
 ```
 
-Compiles the engine to WebAssembly and outputs it to `www/public/pkg/` for the demo page.
+Compiles the engine to WebAssembly and outputs it to `public/pkg/` for the demo page.
 
 ### Frontend (dev server)
 
 ```bash
-cd www && npm install && npm run dev
+pnpm install && pnpm dev
 ```
 
 ### Raspberry Pi
@@ -261,7 +261,7 @@ just consumes its public API.
 | **`crates/rpi`**    | Firmware that runs on the Raspberry Pi: reads the I²C sensors (light, microphones, camera) and streams readings to the demo.                                                     |
 | **`crates/shared`** | Data structures shared between the demo and the Pi firmware (serialized over the wire).                                                                                          |
 | **`crates/xtask`**  | Build automation — `web`, `rpi`, `vercel-deploy`, `run` commands.                                                                                                                |
-| **`www/`**          | Astro + Tailwind web frontend that hosts the WASM build and the demo page.                                                                                                       |
+| **`src/`, `public/`**        | Astro + Tailwind web frontend that hosts the WASM build and the demo page.                                                                                                       |
 
 > The `ferrum` engine crate has no dependency on `demo`, `rpi` or `shared`, so it
 > can be reused as a standalone 3D renderer.

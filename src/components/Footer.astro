@@ -4,7 +4,9 @@ import GitHubIcon from "@/assets/icons/GitHubIcon.astro";
 import YoutubeIcon from "@/assets/icons/YoutubeIcon.astro";
 ---
 
-<footer class="bg-secondary/90 h-auto p-10 lg:px-40">
+<footer
+  class="bg-secondary border-line h-auto border-t px-6 py-10 sm:px-10 lg:px-40"
+>
   <div class="m-auto max-w-6xl">
     <div class="flex items-center justify-between pb-10">
       <FerrumLogo height="80" width="80" />
@@ -25,11 +27,11 @@ import YoutubeIcon from "@/assets/icons/YoutubeIcon.astro";
         </ul>
       </nav>
     </div>
-    <hr />
+    <hr class="border-line" />
     <div>
-      <div class="grid grid-cols-3">
+      <div class="grid grid-cols-2 gap-x-6 sm:grid-cols-3">
         <div class="py-5">
-          <h1 class="py-5 text-xl font-bold text-white">Proyecto</h1>
+          <h2 class="py-3 text-lg font-bold sm:py-5 sm:text-xl">Proyecto</h2>
           <ul class="text-muted space-y-2">
             <li class="hover:text-primary-light transition-all duration-200">
               <a href="#hero">Inicio</a>
@@ -49,7 +51,9 @@ import YoutubeIcon from "@/assets/icons/YoutubeIcon.astro";
           </ul>
         </div>
         <div class="py-5">
-          <h1 class="py-5 text-xl font-bold text-white">Documentación</h1>
+          <h2 class="py-3 text-lg font-bold sm:py-5 sm:text-xl">
+            Documentación
+          </h2>
           <ul class="text-muted space-y-2">
             <li class="hover:text-primary-light transition-all duration-200">
               <a href="">Guía de Usuario</a>
@@ -66,7 +70,7 @@ import YoutubeIcon from "@/assets/icons/YoutubeIcon.astro";
           </ul>
         </div>
         <div class="py-5">
-          <h1 class="py-5 text-xl font-bold text-white">Desarrollo</h1>
+          <h2 class="py-3 text-lg font-bold sm:py-5 sm:text-xl">Desarrollo</h2>
           <ul class="text-muted space-y-2">
             <li class="hover:text-primary-light transition-all duration-200">
               <a href="">GitHub Repository</a>
@@ -83,7 +87,7 @@ import YoutubeIcon from "@/assets/icons/YoutubeIcon.astro";
           </ul>
         </div>
         <div class="py-5">
-          <h1 class="py-5 text-xl font-bold text-white">Recursos</h1>
+          <h2 class="py-3 text-lg font-bold sm:py-5 sm:text-xl">Recursos</h2>
           <ul class="text-muted space-y-2">
             <li class="hover:text-primary-light transition-all duration-200">
               <a href="">Modelos Anatómicos</a>
@@ -100,7 +104,7 @@ import YoutubeIcon from "@/assets/icons/YoutubeIcon.astro";
           </ul>
         </div>
         <div class="py-5">
-          <h1 class="py-5 text-xl font-bold text-white">Comunidad</h1>
+          <h2 class="py-3 text-lg font-bold sm:py-5 sm:text-xl">Comunidad</h2>
           <ul class="text-muted space-y-2">
             <li class="hover:text-primary-light transition-all duration-200">
               <a href="">Discord</a>
@@ -117,10 +121,12 @@ import YoutubeIcon from "@/assets/icons/YoutubeIcon.astro";
           </ul>
         </div>
         <div class="py-5">
-          <h1 class="py-5 text-xl font-bold text-white">Legal</h1>
+          <h2 class="py-3 text-lg font-bold sm:py-5 sm:text-xl">Legal</h2>
           <ul class="text-muted space-y-2">
             <li class="hover:text-primary-light transition-all duration-200">
-              <a href="https://github.com/karlosvas/ferrum/blob/main/LICENSE">Licencia GNU</a>
+              <a href="https://github.com/karlosvas/ferrum/blob/main/LICENSE"
+                >Licencia GNU</a
+              >
             </li>
             <li class="hover:text-primary-light transition-all duration-200">
               <a href="/legal">Privacidad</a>
@@ -135,12 +141,9 @@ import YoutubeIcon from "@/assets/icons/YoutubeIcon.astro";
         </div>
       </div>
     </div>
-    <div
-      class="text-muted mt-10 border-t border-white/10 pt-6 text-center text-sm"
-    >
+    <div class="text-muted border-line mt-10 border-t pt-6 text-center text-sm">
       <p>
-        © 2025 Ferrum - Motor de Rendering 3D para Biología Vegetal
-        Educativa
+        © 2025 Ferrum - Motor de Rendering 3D para Biología Vegetal Educativa
       </p>
       <p class="mt-2">
         Desarrollado en Rust con wgpu | Proyecto de Fin de Grado

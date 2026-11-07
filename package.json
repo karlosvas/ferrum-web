@@ -2,7 +2,7 @@
   "name": "www",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@11.24.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -12,9 +12,9 @@
     "format:write": "prettier --write ."
   },
   "dependencies": {
-    "@astrojs/vercel": "^9.0.5",
+    "@astrojs/vercel": "^11.0.20",
     "@tailwindcss/vite": "^4.1.18",
-    "astro": "^5.16.6",
+    "astro": "^7.4.7",
     "gsap": "^3.15.0",
     "resend": "^6.12.4",
     "sonner": "^2.0.7",
@@ -29,11 +29,5 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "vite-plugin-glsl": "^1.6.1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp"
-    ]
   }
 }

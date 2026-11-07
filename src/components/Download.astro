@@ -3,19 +3,19 @@ import DownloadIcon from "@/assets/icons/DownloadIcon.astro";
 import GradientButton from "./GradientButton.astro";
 ---
 
-<section class="my-20 md:my-96">
+<section class="my-20 md:my-40">
   <h2 class="text-primary-light py-5 text-xl font-bold">Descarga Ferrum</h2>
-  <div class="flex">
+  <div class="flex flex-col gap-8 md:flex-row md:items-center">
     <img
-      src="img/microscopio.webp"
+      src="/img/microscopio.webp"
       alt="Visualización microscópica en Ferrum"
       class="aspect-video w-full rounded-xl object-cover md:aspect-auto md:h-[300px] md:w-2/5 lg:h-[360px]"
     />
 
     <div
-      class="flex w-1/2 flex-row items-start gap-8 px-20 md:gap-5 lg:flex-col"
+      class="flex w-full flex-col items-start gap-4 md:w-3/5 md:px-8 lg:px-12"
     >
-      <p class="text-muted mb-6 leading-relaxed">
+      <p class="text-muted leading-relaxed">
         Acceso abierto y multiplataforma. Descarga Ferrum sin coste para
         Windows, macOS o Linux, o accede directamente desde tu navegador
         mediante WebAssembly. Motor de rendering 3D desarrollado en Rust,
@@ -59,13 +59,11 @@ import GradientButton from "./GradientButton.astro";
   const { file, label } = files[platform];
 
   const btn = document.getElementById("download-btn") as HTMLAnchorElement;
-  const lbl = document.getElementById("download-label") as HTMLSpanElement;
-  const hint = document.getElementById(
-    "download-platform",
-  ) as HTMLParagraphElement;
+  const lbl = document.getElementById("download-label");
+  const hint = document.getElementById("download-platform");
 
   btn.href = `${BASE}/${file}`;
   btn.removeAttribute("target");
-  lbl.textContent = label;
-  hint.textContent = `SHA-256 disponible en la página de releases`;
+  if (lbl) lbl.textContent = label;
+  if (hint) hint.textContent = `SHA-256 disponible en la página de releases`;
 </script>

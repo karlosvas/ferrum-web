@@ -1,12 +1,12 @@
 # AGENTS.md
 
-Rust Cargo workspace (Rust edition 2024, wgpu 29 / winit 0.30) + an Astro site in `www/`. The engine is `ferrum-wgpu`; `demo` is the app (native + WASM); `rpi` is Pi sensor firmware; `shared` is wire-format structs; `xtask` is build automation.
+Rust Cargo workspace (Rust edition 2024, wgpu 29 / winit 0.30) + an Astro site at the repo root (`src/`, `public/`). The engine is `ferrum-wgpu`; `demo` is the app (native + WASM); `rpi` is Pi sensor firmware; `shared` is wire-format structs; `xtask` is build automation.
 
 ## Commands
 
 - Desktop demo: `cargo run -p demo`
-- Web WASM build: `cargo xtask web` — wasm-pack compiles `crates/demo` into `www/public/pkg/` (gitignored). Requires `wasm-pack` installed. `wasm-opt` is deliberately disabled (`package.metadata.wasm-pack`).
-- Frontend dev: `cd www && pnpm install && pnpm dev` — **pnpm**, not npm. Root `package.json` only pins the vercel CLI. Prettier: `pnpm format:check` / `format:write`.
+- Web WASM build: `cargo xtask web` — wasm-pack compiles `crates/demo` into `public/pkg/` (gitignored). Requires `wasm-pack` installed. `wasm-opt` is deliberately disabled (`package.metadata.wasm-pack`).
+- Frontend dev: `pnpm install && pnpm dev` — **pnpm**, not npm. Prettier: `pnpm format:check` / `format:write`.
 - Deploy web: `cargo xtask deploy` (requires vercel CLI).
 - Pi: `cargo xtask rpi` — `cross` build for `aarch64-unknown-linux-gnu`, needs Docker/Podman. On Windows it recurses into WSL.
 - `cargo xtask demo` = build+deploy Pi then run desktop demo.
@@ -34,7 +34,7 @@ Gotchas:
 - License is dual GPL-3.0-only + commercial; `deny.toml` gates dependency licenses — new deps must be in the allow list (`cargo deny check`).
 - No test suites exist (`crates/` has no `#[test]`). CI (`.github/workflows/release.yml`) only builds release binaries on `v*` tags plus `cargo audit`; no lint/test gate.
 
-## www (Astro)
+## Web (Astro, repo root)
 
 - Astro 5 + Tailwind 4, Vercel adapter, `output: "static"`. Path alias `@/*` → `./src/*`. `.astro/` types are generated (gitignored).
 - `src/pages/resend.ts` is the only server route (`export const prerender = false`) and needs `RESEND_API_KEY` (not in `.env.example`, which only lists SK_STRIPE/PK_STRIPE).

@@ -5,26 +5,26 @@ interface Props {
 const { dataSection } = Astro.props;
 ---
 
-<section class="my-20 md:my-52" id="features">
-  <h2 class="text-primary-light mt-16 text-2xl font-bold md:mt-80">
+<section class="my-20 md:my-40" id="features">
+  <h2 class="text-primary-light mb-6 text-2xl font-bold md:text-3xl">
     Características
   </h2>
   <div class="my-5 grid grid-cols-1 gap-6 md:grid-cols-2">
     {
       dataSection.map((item) => {
         return (
-          <div class="bg-secondary/60 border-primary-light hover:bg-secondary/40 group space-y-3 rounded-xl border-1 p-3 transition-colors transition-transform duration-200 hover:translate-y-0.5">
-            <span class="flex items-center space-x-3">
+          <div class="bg-secondary border-line hover:border-primary group space-y-3 rounded-xl border p-5 transition duration-200 hover:translate-y-0.5">
+            <span class="flex items-start gap-3">
               <item.svg
-                heigth="30px"
+                height="30px"
                 width="40px"
                 class="group-hover:text-primary"
               />
-              <h3 class="group-hover:text-primary-light text-shadow-white">
+              <h3 class="group-hover:text-primary-light font-semibold">
                 {item.title}
               </h3>
             </span>
-            <p class="text-muted transition-colors duration-200 group-hover:text-white">
+            <p class="text-muted group-hover:text-light transition-colors duration-200">
               {item.description}
             </p>
           </div>

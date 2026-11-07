@@ -1,19 +1,50 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #33ff66;
-  --color-primary-dark: #1a8033;
-  --color-primary-light: #7dffa3;
-  --color-accent: #80df6d;
-  --color-dark: #0a0e1a;
-  --color-secondary: #151b2e;
-  --color-light: #e5e7eb;
-  --color-muted: #9ca3af;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tema claro por defecto (paleta del portfolio); oscuro con la clase .dark */
+:root {
+  --c-dark: #f6f2ed; /* fondo de página */
+  --c-secondary: #fffefc; /* superficies / tarjetas */
+  --c-light: #1c1917; /* texto principal */
+  --c-muted: #605850;
+  --c-line: #e3dbd1;
+  --c-primary: #a83e22;
+  --c-primary-light: #b5472a;
+  --c-primary-dark: #7a2b16;
+  --c-accent: #d9694a;
+  color-scheme: light;
+}
+
+.dark {
+  --c-dark: #0a0e1a;
+  --c-secondary: #151b2e;
+  --c-light: #e5e7eb;
+  --c-muted: #9ca3af;
+  --c-line: #2a3350;
+  --c-primary: #33ff66;
+  --c-primary-light: #7dffa3;
+  --c-primary-dark: #1a8033;
+  --c-accent: #80df6d;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-primary: var(--c-primary);
+  --color-primary-dark: var(--c-primary-dark);
+  --color-primary-light: var(--c-primary-light);
+  --color-accent: var(--c-accent);
+  --color-dark: var(--c-dark);
+  --color-secondary: var(--c-secondary);
+  --color-light: var(--c-light);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
 }
 
 html {
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) var(--color-dark);
+  overflow-x: clip;
 }
 
 ::-webkit-scrollbar {
@@ -42,6 +73,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-dark);
   color: var(--color-light);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 [id] {
@@ -49,6 +83,15 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary);
   color: var(--color-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

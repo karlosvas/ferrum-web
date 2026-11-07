@@ -1,4 +1,9 @@
 target/
+crates/
+Cargo.*
+deny.toml
+.github/
+LICENSE*
 crates/**/res/
 node_modules/
 crates/ferrum/res/

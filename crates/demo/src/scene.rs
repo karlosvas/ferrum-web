@@ -17,6 +17,14 @@ use {
     tsl2591_rs::driver::SensorReading,
 };
 
+#[cfg(target_arch = "wasm32")]
+fn web_assets_base() -> String {
+    let origin: String = web_sys::window()
+        .and_then(|w| w.location().origin().ok())
+        .unwrap_or_else(|| "http://localhost".into());
+    format!("{origin}/res/")
+}
+
 pub fn build_app(rx: mpsc::Receiver<RpiDemo>) -> App {
     let demo_models: Rc<RefCell<HashMap<&str, usize>>> = Rc::new(RefCell::new(HashMap::new()));
     let demo_models_update: Rc<RefCell<HashMap<&str, usize>>> = demo_models.clone();
@@ -25,6 +33,10 @@ pub fn build_app(rx: mpsc::Receiver<RpiDemo>) -> App {
         size: WindowSize::new(1000, 500),
         #[cfg(not(target_arch = "wasm32"))]
         asset: ferrum_wgpu::assets::Asset::new(concat!(env!("OUT_DIR"), "/res").to_string()),
+        // En wasm los recursos se piden por HTTP: hace falta una URL absoluta
+        // (`cargo xtask web` copia `crates/demo/res` a `public/res`).
+        #[cfg(target_arch = "wasm32")]
+        asset: ferrum_wgpu::assets::Asset::new(web_assets_base()),
         ..Default::default()
     };
 

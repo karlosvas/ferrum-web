@@ -27,3 +27,4 @@ dist/
 .astro/
 .vercel
 public/pkg/
+public/res/

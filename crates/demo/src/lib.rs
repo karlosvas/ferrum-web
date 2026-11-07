@@ -165,7 +165,21 @@ impl ApplicationHandler<State> for App {
         let window: Arc<Window> = Arc::new(event_loop.create_window(window_attributes).unwrap());
         self.window = Some(Arc::clone(&window));
         let inner_size: ferrum_wgpu::PhysicalSize<u32> = window.inner_size();
-        let size: WindowSize = WindowSize::new(inner_size.width, inner_size.height);
+        // En el navegador `inner_size()` puede ser 0 al arrancar (el canvas aún no
+        // tiene layout) y el motor configura la superficie con ese tamaño inicial:
+        // si es 0, wgpu falla con "Dimension X is zero". Usamos el tamaño pedido.
+        let size: WindowSize = if inner_size.width == 0 || inner_size.height == 0 {
+            log::warn!(
+                "inner_size {}x{} inválido; usando {}x{}",
+                inner_size.width,
+                inner_size.height,
+                self.config.size.width,
+                self.config.size.height
+            );
+            WindowSize::new(self.config.size.width, self.config.size.height)
+        } else {
+            WindowSize::new(inner_size.width, inner_size.height)
+        };
         let setup = self.setup.take();
         let asset = self.config.asset.clone();
 

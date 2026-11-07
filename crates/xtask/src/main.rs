@@ -53,6 +53,28 @@ fn compile_web() -> Result<()> {
     anyhow::ensure!(status.success(), "wasm-pack failed");
     tracing::info!("{}", "✓ WSM compiled succesfuly".green());
 
+    // Recursos que el wasm pide por HTTP. `exr/` va embebido con include_bytes!.
+    let res_src: PathBuf = std::env::current_dir()?.join("crates/demo/res");
+    let res_dst: PathBuf = std::env::current_dir()?.join("public/res");
+    for dir in ["plant", "floor", "sun"] {
+        copy_dir(&res_src.join(dir), &res_dst.join(dir))?;
+    }
+    tracing::info!("{}", "✓ Recursos copiados a public/res".green());
+
+    Ok(())
+}
+
+fn copy_dir(src: &std::path::Path, dst: &std::path::Path) -> Result<()> {
+    std::fs::create_dir_all(dst)?;
+    for entry in std::fs::read_dir(src)? {
+        let entry = entry?;
+        let to = dst.join(entry.file_name());
+        if entry.file_type()?.is_dir() {
+            copy_dir(&entry.path(), &to)?;
+        } else {
+            std::fs::copy(entry.path(), to)?;
+        }
+    }
     Ok(())
 }
 

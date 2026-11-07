@@ -15,7 +15,7 @@ import GradientButton from "./GradientButton.astro";
     >
       <!-- Terminal toolbar -->
       <div
-        class="flex items-center justify-between gap-2 border-b border-white/10 bg-[#151b2e] px-3 py-2.5 select-none sm:px-4"
+        class="border-line flex items-center justify-between gap-2 border-b bg-[#efe7dc] px-3 py-2.5 select-none sm:px-4 dark:border-white/10 dark:bg-[#151b2e]"
       >
         <!-- Dots -->
         <div class="flex items-center gap-1.5">
@@ -23,29 +23,31 @@ import GradientButton from "./GradientButton.astro";
             id="closeCanvas"
             class="h-2.5 w-2.5 cursor-pointer rounded-full bg-[#ce422b] shadow-[0_0_6px_rgba(206,55,43,0.5)]"
           ></span>
-          <span class="h-2.5 w-2.5 rounded-full bg-[#4a4a2a]"></span>
-          <span class="h-2.5 w-2.5 rounded-full bg-[#1a3a1a]"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-[#c9a54a] dark:bg-[#4a4a2a]"
+          ></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-[#6fae6a] dark:bg-[#1a3a1a]"
+          ></span>
         </div>
         <!-- Title -->
         <div
           class="flex items-center gap-0.5 font-mono text-[10px] tracking-widest sm:text-xs"
         >
-          <span class="font-bold text-[#ce422b]">FERRUM</span>
-          <span class="mx-0.5 text-[#ce422b]/40">::</span>
-          <span class="text-[#e5e7eb]/60">RENDER_ENGINE</span>
+          <span class="text-primary font-bold dark:text-[#ce422b]">FERRUM</span>
+          <span class="text-primary/40 mx-0.5 dark:text-[#ce422b]/40">::</span>
+          <span class="text-muted dark:text-[#e5e7eb]/60">RENDER_ENGINE</span>
           <span
-            class="ml-0.5 animate-[blink_1.2s_step-end_infinite] text-[#ce422b]"
+            class="text-primary ml-0.5 animate-[blink_1.2s_step-end_infinite] dark:text-[#ce422b]"
             >▋</span
           >
         </div>
         <!-- Badges -->
         <div class="hidden gap-1.5 sm:flex">
           <span
-            class="rounded border border-[#ce422b]/20 px-1.5 py-px font-mono text-[10px] tracking-widest text-[#ce422b]/70"
+            class="border-primary/30 text-primary rounded border px-1.5 py-px font-mono text-[10px] tracking-widest dark:border-[#ce422b]/20 dark:text-[#ce422b]/70"
             >WGPU</span
           >
           <span
-            class="rounded border border-[#ce422b]/20 px-1.5 py-px font-mono text-[10px] tracking-widest text-[#ce422b]/70"
+            class="border-primary/30 text-primary rounded border px-1.5 py-px font-mono text-[10px] tracking-widest dark:border-[#ce422b]/20 dark:text-[#ce422b]/70"
             >WASM</span
           >
         </div>
@@ -95,18 +97,18 @@ import GradientButton from "./GradientButton.astro";
       </div>
       <!-- Footer -->
       <div
-        class="flex items-center gap-3 border-t border-white/10 bg-[#151b2e] px-4 py-2"
+        class="border-line flex items-center gap-3 border-t bg-[#efe7dc] px-4 py-2 dark:border-white/10 dark:bg-[#151b2e]"
       >
         <div
-          class="h-px flex-1 bg-linear-to-r from-transparent via-[#ce422b]/20 to-transparent"
+          class="via-primary/25 h-px flex-1 bg-linear-to-r from-transparent to-transparent dark:via-[#ce422b]/20"
         >
         </div>
         <span
-          class="font-mono text-[10px] tracking-[0.12em] whitespace-nowrap text-[#ce422b]/35"
+          class="text-primary/60 font-mono text-[10px] tracking-[0.12em] whitespace-nowrap dark:text-[#ce422b]/35"
           >ferrum v0.1.0-alpha</span
         >
         <div
-          class="h-px flex-1 bg-linear-to-r from-transparent via-[#ce422b]/20 to-transparent"
+          class="via-primary/25 h-px flex-1 bg-linear-to-r from-transparent to-transparent dark:via-[#ce422b]/20"
         >
         </div>
       </div>
@@ -273,7 +275,18 @@ import GradientButton from "./GradientButton.astro";
     try {
       // URL en variable: Vite no debe resolverlo al compilar (lo genera `cargo xtask web`).
       const wasmUrl = "/pkg/demo.js";
-      ({ default: init } = await import(/* @vite-ignore */ wasmUrl));
+      if (import.meta.env.DEV) {
+        // Vite dev prohíbe `import()` de archivos en /public: se carga vía Blob
+        // y se pasa la URL del .wasm explícitamente (import.meta.url sería el blob).
+        const src = await (await fetch(wasmUrl)).text();
+        const blobUrl = URL.createObjectURL(
+          new Blob([src], { type: "text/javascript" }),
+        );
+        const mod = await import(/* @vite-ignore */ blobUrl);
+        init = () => mod.default({ module_or_path: "/pkg/demo_bg.wasm" });
+      } else {
+        ({ default: init } = await import(/* @vite-ignore */ wasmUrl));
+      }
     } catch (e) {
       console.error("[ferrum] No se pudo cargar /pkg/demo.js:", e);
       started = false;

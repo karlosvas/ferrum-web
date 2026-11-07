@@ -1084,9 +1084,9 @@ dependencies = [
 
 [[package]]
 name = "ferrum-wgpu"
-version = "0.2.1"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ac09293c4d5d58c5fe46c121b39cebe4b88905554cc1e5587db62d47be014f0"
+checksum = "091b6f174d9fff3de2414d1c71e731665250f9526537ff225d6175920323e4c1"
 dependencies = [
  "anyhow",
  "bytemuck",

@@ -38,7 +38,7 @@ fn compile_web() -> Result<()> {
         "wasm-pack is not installed".red()
     );
 
-    let out_dir: PathBuf = std::env::current_dir()?.join("www/public/pkg");
+    let out_dir: PathBuf = std::env::current_dir()?.join("public/pkg");
     let status: ExitStatus = Command::new("wasm-pack")
         .args([
             "build",
@@ -56,16 +56,12 @@ fn compile_web() -> Result<()> {
     Ok(())
 }
 
-fn www_dir() -> anyhow::Result<PathBuf> {
-    Ok(std::env::current_dir()?.join("www"))
-}
-
 fn deploy_web() -> Result<()> {
     anyhow::ensure!(which("vercel").is_ok(), "vercel CLI is not installed");
 
     compile_web()?;
 
-    let dir: PathBuf = www_dir()?;
+    let dir: PathBuf = std::env::current_dir()?;
     let status: ExitStatus = Command::new("vercel")
         .args(["deploy", "--prod", "--yes", "--archive=tgz"])
         .current_dir(dir)
